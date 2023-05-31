@@ -19,16 +19,16 @@ export class QuizCommentController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.quizCommentService.findOne(+id);
+    return this.quizCommentService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateQuizCommentDto: UpdateQuizCommentDto) {
-    return this.quizCommentService.update(+id, updateQuizCommentDto);
+    return this.quizCommentService.update(id, updateQuizCommentDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.quizCommentService.remove(+id);
+    return this.quizCommentService.remove(id);
   }
 }

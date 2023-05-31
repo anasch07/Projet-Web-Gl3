@@ -12,15 +12,15 @@ export class QuizService {
     return `This action returns all quiz`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} quiz`;
   }
 
-  update(id: number, updateQuizDto: UpdateQuizDto) {
+  update(id: string, updateQuizDto: UpdateQuizDto) {
     return `This action updates a #${id} quiz`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} quiz`;
   }
 }
