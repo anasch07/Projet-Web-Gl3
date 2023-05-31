@@ -9,7 +9,7 @@ export class QuizSubmissionController {
   constructor(private readonly quizSubmissionService: QuizSubmissionService) {}
 
   @Post()
-  createQuizResponse(@Body() createQuizSubmissionDto: CreateQuizSubmissionDto) {
+  create(@Body() createQuizSubmissionDto: CreateQuizSubmissionDto) {
     return this.quizSubmissionService.create(createQuizSubmissionDto);
   }
   

@@ -13,8 +13,11 @@ export class QuizQuestion {
   @Column()
   mark: number
 
+  @Column({name: "correctOptionId"})
+  correctOptionId: string
+
   @OneToOne(() => QuizOption, (opt) => opt.question)
-  @JoinColumn({name: "correctOption"})
+  @JoinColumn({name: "correctOptionId"})
   correctOption: QuizOption
 
   @OneToMany(() => QuizOption, (opt) => opt.question)

@@ -1,8 +1,9 @@
 export class CreateQuizSubmissionDto {
-fr:FormResponse
+  fr:FormResponse
 
-idQuizz: string
+  idQuizz: string
 }
+
 type FormResponse= {
-    [key: string]: string
-  }
+  [key: string]: string
+}

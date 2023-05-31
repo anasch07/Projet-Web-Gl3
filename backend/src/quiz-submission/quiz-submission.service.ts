@@ -20,32 +20,35 @@ export class QuizSubmissionService {
   @InjectRepository(UserAnswers)
     private UserAnswerRepo: Repository<UserAnswers>
   ) {}
-
-  create(createQuizSubmissionDto: CreateQuizSubmissionDto) {
-    return 'This action adds a new quizSubmission';
-  }
  
-  async createQuizResponse(CreateQuizSubmissionDto: CreateQuizSubmissionDto) {
+  async create(CreateQuizSubmissionDto: CreateQuizSubmissionDto) {
     const { idQuizz, fr } = CreateQuizSubmissionDto;
     const quizSubmission= new QuizSubmission()
     const quiz=await this.quizService.findOne(idQuizz);
     quizSubmission.quiz=quiz
+    quizSubmission.creationDate = new Date()
+    quizSubmission.mark = 0
     //sub Save
-    await this.submissionRepo.save(this.submissionRepo.create(quizSubmission));
-    Object.entries(fr).forEach(async ([questionId, optionId]) => {
+    const submission = await this.submissionRepo.save(this.submissionRepo.create(quizSubmission));
+
+    const entries = Object.entries(fr)
+    for(let idx=0; idx<entries.length; idx++) {
+      const [questionId, optionId] = entries[idx]
       const userAnswer = new UserAnswers();
       const quest=await this.quizQuestionService.findOne(questionId)
       const option=await this.quizOptionService.findOne(optionId)
-      userAnswer.submission=quizSubmission
+      userAnswer.submission=submission
       userAnswer.question=quest
       userAnswer.answer=option
 
-      if(userAnswer.question.correctOption==userAnswer.answer){
-        quizSubmission.mark++       
+      if(userAnswer.question.correctOptionId==optionId){
+        submission.mark++
       }
       await this.UserAnswerRepo.save(this.UserAnswerRepo.create(userAnswer))
-     });
-    return quizSubmission;
+    }
+    
+    await this.submissionRepo.save(this.submissionRepo.create(submission));
+    return submission;
   }
 
   findAll() {
