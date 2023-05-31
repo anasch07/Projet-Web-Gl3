@@ -11,6 +11,9 @@ import { QuizOption } from './entities/quiz-option.entity';
     TypeOrmModule.forFeature(
       [QuizOption]
     )
+  ],
+  exports: [
+    QuizOptionService
   ]
 })
 export class QuizOptionModule {}

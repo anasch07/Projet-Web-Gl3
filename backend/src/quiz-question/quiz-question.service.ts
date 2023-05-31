@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateQuizQuestionDto } from './dto/create-quiz-question.dto';
 import { UpdateQuizQuestionDto } from './dto/update-quiz-question.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QuizQuestion } from './entities/quiz-question.entity';
 import { EntityManager, Repository } from 'typeorm';
 import { QuizOption } from 'src/quiz-option/entities/quiz-option.entity';
+import { QuizOptionService } from 'src/quiz-option/quiz-option.service';
+import { CreateQuizOptionDto } from 'src/quiz-option/dto/create-quiz-option.dto';
 
 
 
@@ -14,7 +16,9 @@ export class QuizQuestionService {
     @InjectRepository(QuizQuestion)
     private quizQuestionRepository: Repository<QuizQuestion>,
     @InjectRepository(QuizOption)
-    private quizOptionRepository: Repository<QuizOption>
+    private quizOptionRepository: Repository<QuizOption>,
+    @Inject(QuizOptionService)
+    private quizOptionService: QuizOptionService
   ) {}
 
   async create(createQuizQuestionDto: CreateQuizQuestionDto, quizId: string, entityManager?: EntityManager) {
@@ -37,11 +41,11 @@ export class QuizQuestionService {
     const wrongOptions = options.filter((opt) => !opt.isCorrect);
 
     const wrongOptionsPromises = wrongOptions.map((opt) => {
-      const newOption = new QuizOption();
+      const newOption = new CreateQuizOptionDto();
       newOption.display = opt.option;
-      newOption.question = savedQuestion;
+      newOption.questionId = savedQuestion.id;
       //TODO: save the option using its service
-      return entityManager?.save(newOption) || this.quizOptionRepository.save(newOption);
+      return this.quizOptionService.create(newOption, entityManager);
     });
 
     const wrongOptionsResult = await Promise.all(wrongOptionsPromises);
@@ -51,20 +55,18 @@ export class QuizQuestionService {
 
     if(!correctOption) throw new Error('A question must have a correct option');
 
-    const newOption = new QuizOption();
+    const newOption = new CreateQuizOptionDto();
     newOption.display = correctOption.option;
-    newOption.question = savedQuestion;
-    
-    //TODO: save the option using its service
-    const correctOptionResult = await entityManager?.save(newOption) 
-                            || await this.quizOptionRepository.save(newOption);
+    newOption.questionId = savedQuestion.id;
+    const correctOptionResult = await this.quizOptionService.create(newOption, entityManager);
+
 
     //---- update the question with correct option
 
     savedQuestion.correctOption = correctOptionResult;
     savedQuestion.wrongOptions = wrongOptionsResult;
 
-    return entityManager?.save(savedQuestion) || this.quizQuestionRepository.save(savedQuestion);
+    return entityManager?.save(QuizQuestion ,savedQuestion) || this.quizQuestionRepository.save(savedQuestion);
   }
 
   findByQuizID(quizId: string) {

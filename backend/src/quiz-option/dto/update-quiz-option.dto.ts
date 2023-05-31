@@ -1,4 +1,6 @@
 import { PartialType } from '@nestjs/swagger';
 import { CreateQuizOptionDto } from './create-quiz-option.dto';
 
-export class UpdateQuizOptionDto extends PartialType(CreateQuizOptionDto) {}
+export class UpdateQuizOptionDto extends PartialType(CreateQuizOptionDto) {
+  display?: string;
+}
