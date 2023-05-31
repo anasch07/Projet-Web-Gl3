@@ -11,12 +11,8 @@ import Modal from '../shared/Modal';
 import Table from '../shared/Table';
 import TableItem from '../shared/TableItem';
 
-interface UsersTableProps {
-  data: Course[];
-  isLoading: boolean;
-}
 
-export default function QuizzesTable({ data, isLoading }: UsersTableProps) {
+export default function QuizzesTable({ data, isLoading }: any) {
   const { authenticatedUser } = useAuth();
   const [deleteShow, setDeleteShow] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
@@ -57,33 +53,29 @@ export default function QuizzesTable({ data, isLoading }: UsersTableProps) {
 
   return (
     <>
+      {/*center */}
       <div className="table-container">
         <Table
-          columns={['Title', 'Description', 'Course', 'Chapter', 'Action']}
+          columns={['Chapter', 'Course','Description',  'NumberOfQuestions', 'Action']}
         >
           {isLoading
             ? null
-            : data.map(({ id, name, description, dateCreated }) => (
-                <tr key={id}>
+            : data.map((item,index) => (
+                <tr key={index}>
                   <TableItem>
-                    <Link to={`/courses/${id}`}>{name}</Link>
+                    <Link to={`/courses/${item.chaptre.id}`}>{item.chaptre.name}</Link>
                   </TableItem>
-                  <TableItem>{description}</TableItem>
+                  <TableItem>{item.description}</TableItem>
                   <TableItem>
-                    {new Date(dateCreated).toLocaleDateString()}
+                    {item.description}
+                  </TableItem>
+                  <TableItem>
+                    {item.questions.length}
                   </TableItem>
                   <TableItem className="text-right">
                     {['admin', 'editor'].includes(authenticatedUser.role) ? (
                       <button
                         className="text-indigo-600 hover:text-indigo-900 focus:outline-none"
-                        onClick={() => {
-                          setSelectedCourseId(id);
-
-                          setValue('name', name);
-                          setValue('description', description);
-
-                          setUpdateShow(true);
-                        }}
                       >
                         Edit
                       </button>
@@ -91,10 +83,7 @@ export default function QuizzesTable({ data, isLoading }: UsersTableProps) {
                     {authenticatedUser.role === 'admin' ? (
                       <button
                         className="text-red-600 hover:text-red-900 ml-3 focus:outline-none"
-                        onClick={() => {
-                          setSelectedCourseId(id);
-                          setDeleteShow(true);
-                        }}
+
                       >
                         Delete
                       </button>

@@ -83,7 +83,8 @@ export default function AddQuiz() {
       scheduleDate: scheduleDate,
       deadlineDate: deadlineDate,
     });
-    if (response.status === 201) {
+    // @ts-ignore
+    if (response) {
       window.location.href = '/QuizzesTeacher';
     } else {
       setError("Couldn't add quiz verify your data");

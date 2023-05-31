@@ -10,6 +10,7 @@ import Modal from '../../components/shared/Modal';
 import useAuth from '../../hooks/useAuth';
 import CreateCourseRequest from '../../models/course/CreateCourseRequest';
 import courseService from '../../services/CourseService';
+import QuizService from "../../services/QuizService";
 
 export default function QuizzesTeacher() {
   const [name, setName] = useState('');
@@ -20,16 +21,14 @@ export default function QuizzesTeacher() {
 
   const { authenticatedUser } = useAuth();
   const { data, isLoading } = useQuery(
-    ['courses', name, description],
+    [],
     () =>
-      courseService.findAll({
-        name: name || undefined,
-        description: description || undefined,
-      }),
+      QuizService.findAll(),
     {
-      refetchInterval: 1000,
+      refetchInterval: 100000,
     },
   );
+    console.log("data", data);
 
   return (
     <Layout>
