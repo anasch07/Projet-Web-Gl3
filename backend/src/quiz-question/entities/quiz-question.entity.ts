@@ -14,7 +14,7 @@ export class QuizQuestion {
   mark: number
 
   @OneToOne(() => QuizOption, (opt) => opt.question)
-  @JoinColumn({name: "correctOption"})
+  // @JoinColumn({name: "correctOption"})
   correctOption: QuizOption
 
   @OneToMany(() => QuizOption, (opt) => opt.question)
