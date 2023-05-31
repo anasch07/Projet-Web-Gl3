@@ -21,7 +21,7 @@ export class User extends BaseEntity {
   @Exclude()
   password: string;
 
-  @Column({ type: 'enum', enum: Role, default: Role.User })
+  @Column({ type: 'enum', enum: Role, default: Role.Student })
   role: Role;
 
   @Column({ nullable: true })

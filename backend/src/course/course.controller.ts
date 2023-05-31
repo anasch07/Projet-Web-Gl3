@@ -35,7 +35,7 @@ export class CourseController {
   ) {}
 
   @Post()
-  @Roles(Role.Admin, Role.Editor)
+  @Roles(Role.Admin, Role.Teacher)
   async save(@Body() createCourseDto: CreateCourseDto): Promise<Course> {
     return await this.courseService.save(createCourseDto);
   }
@@ -51,7 +51,7 @@ export class CourseController {
   }
 
   @Put('/:id')
-  @Roles(Role.Admin, Role.Editor)
+  @Roles(Role.Admin, Role.Teacher)
   async update(
     @Param('id') id: string,
     @Body() updateCourseDto: UpdateCourseDto,
@@ -66,7 +66,7 @@ export class CourseController {
   }
 
   @Post('/:id/contents')
-  @Roles(Role.Admin, Role.Editor)
+  @Roles(Role.Admin, Role.Teacher)
   async saveContent(
     @Param('id') id: string,
     @Body() createContentDto: CreateContentDto,
@@ -83,7 +83,7 @@ export class CourseController {
   }
 
   @Put('/:id/contents/:contentId')
-  @Roles(Role.Admin, Role.Editor)
+  @Roles(Role.Admin, Role.Teacher)
   async updateContent(
     @Param('id') id: string,
     @Param('contentId') contentId: string,

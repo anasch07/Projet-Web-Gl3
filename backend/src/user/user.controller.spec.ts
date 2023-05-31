@@ -44,7 +44,7 @@ const MockService = {
       firstName: 'test',
       lastName: 'test',
       password: 'test',
-      role: Role.User,
+      role: Role.Student,
       isActive: true,
       username: 'test',
     };
@@ -87,7 +87,7 @@ describe('UserController', () => {
         firstName: 'test',
         lastName: 'test',
         password: 'test',
-        role: Role.User,
+        role: Role.Student,
         username: 'test',
       });
       expect(returnValue.id).toBe('testid');
@@ -119,7 +119,7 @@ describe('UserController', () => {
     it('should update a user and return changed values', async () => {
       const updatedUser = await controller.update('testid', {
         firstName: 'test',
-        role: Role.Editor,
+        role: Role.Teacher,
       });
       expect(updatedUser.id).toBe('testid');
       expect(updatedUser.role).toBe('editor');
