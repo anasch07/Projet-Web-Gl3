@@ -1,4 +1,12 @@
-import { BookOpen, Home, LogOut, Users } from 'react-feather';
+import {
+  BookOpen,
+  Home,
+  Inbox,
+  LogOut,
+  Menu,
+  PenTool,
+  Users,
+} from 'react-feather';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 
@@ -36,6 +44,11 @@ export default function Sidebar({ className }: SidebarProps) {
         {authenticatedUser.role === 'admin' ? (
           <SidebarItem to="/users">
             <Users /> Users
+          </SidebarItem>
+        ) : null}
+        {authenticatedUser.role === 'admin' ? (
+          <SidebarItem to="/QuizzesTeacher">
+            <PenTool /> Quizes
           </SidebarItem>
         ) : null}
       </nav>

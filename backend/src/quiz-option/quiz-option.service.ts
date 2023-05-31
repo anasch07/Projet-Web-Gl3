@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EntityManager, Repository } from 'typeorm';
+
 import { CreateQuizOptionDto } from './dto/create-quiz-option.dto';
 import { UpdateQuizOptionDto } from './dto/update-quiz-option.dto';
-import { EntityManager, Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 import { QuizOption } from './entities/quiz-option.entity';
 import { QuizQuestion } from 'src/quiz-question/entities/quiz-question.entity';
 
@@ -10,18 +11,21 @@ import { QuizQuestion } from 'src/quiz-question/entities/quiz-question.entity';
 export class QuizOptionService {
   constructor(
     @InjectRepository(QuizOption)
-    private quizOptionRepository: Repository<QuizOption>
-  ) { }
+    private quizOptionRepository: Repository<QuizOption>,
+  ) {}
 
-  create(createQuizOptionDto: CreateQuizOptionDto, entityManager?: EntityManager) {
-    return entityManager?.save(QuizOption, createQuizOptionDto) || this.quizOptionRepository.save(createQuizOptionDto);
+  create(
+    createQuizOptionDto: CreateQuizOptionDto,
+    entityManager?: EntityManager,
+  ) {
+    return (
+      entityManager?.save(QuizOption, createQuizOptionDto) ||
+      this.quizOptionRepository.save(createQuizOptionDto)
+    );
   }
 
   findOne(id: string) {
-    const query = this.quizOptionRepository.createQueryBuilder("quizoption")
-      .leftJoinAndSelect(QuizQuestion, "QuizQuestion", "quizoption.questionId = QuizQuestion.id")
-
-    return query.getOne() // this.quizOptionRepository.findOne(id);
+    return this.quizOptionRepository.findOne(id);
   }
 
   update(id: string, updateQuizOptionDto: UpdateQuizOptionDto) {

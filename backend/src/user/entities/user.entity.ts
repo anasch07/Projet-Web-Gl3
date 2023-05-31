@@ -1,8 +1,15 @@
 import { Exclude } from 'class-transformer';
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { QuizSubmission } from 'src/quiz-submission/entities/quiz-submission.entity';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import { Role } from '../../enums/role.enum';
-import { QuizSubmission } from 'src/quiz-submission/entities/quiz-submission.entity';
 
 @Entity()
 export class User {
@@ -18,12 +25,12 @@ export class User {
   @Column()
   username: string;
 
-  @OneToMany(type => QuizSubmission, sub => sub.quiz, {eager: true})
-  submissions: QuizSubmission[]
-  
+  @OneToMany(() => QuizSubmission, (sub) => sub.student)
+  submissions: QuizSubmission[];
+
   @Column({ type: 'enum', enum: Role, default: Role.Student })
   role: Role;
-  
+
   @Column()
   @Exclude()
   password: string;

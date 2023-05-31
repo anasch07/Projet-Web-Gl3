@@ -11,16 +11,16 @@ import { UserService } from './user/user.service';
 async function createAdminOnFirstUse(app: INestApplication) {
   const userService = app.get(UserService);
 
-  const admin = await userService.findByUsername("admin")
+  const admin = await userService.findByUsername('admin');
 
-  if(!admin){
+  if (!admin) {
     await userService.save({
-      firstName: "admin",
-      lastName: "admin",
-      password: "admin123",
+      firstName: 'admin',
+      lastName: 'admin',
+      password: 'admin123',
       role: Role.Admin,
-      username: "admin"
-    })
+      username: 'admin',
+    });
   }
 }
 

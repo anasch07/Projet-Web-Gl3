@@ -35,13 +35,12 @@ export class QuizSubmissionService {
     for(let idx=0; idx<entries.length; idx++) {
       const [questionId, optionId] = entries[idx]
       const userAnswer = new UserAnswers();
-      const quest=await this.quizQuestionService.findOne(questionId)
-      const option=await this.quizOptionService.findOne(optionId)
+      const quest = await this.quizQuestionService.findOne(questionId)
+      const option = await this.quizOptionService.findOne(optionId)
       userAnswer.submission=submission
       userAnswer.question=quest
       userAnswer.answer=option
-
-      if(userAnswer.question.correctOptionId==optionId){
+      if(option.isCorrect){
         submission.mark++
       }
       await this.UserAnswerRepo.save(this.UserAnswerRepo.create(userAnswer))

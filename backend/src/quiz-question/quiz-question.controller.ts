@@ -17,10 +17,7 @@ export class QuizQuestionController {
   findByQuizID(@Param('id') quizId: string) {
     return this.quizQuestionService.findByQuizID(quizId);
   }
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.quizQuestionService.findOne(id)
-  }
+  
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateQuizQuestionDto: UpdateQuizQuestionDto) {
     return this.quizQuestionService.update(id, updateQuizQuestionDto);
