@@ -11,7 +11,8 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 
-import { LoginDto, LoginResponseDto } from './auth.dto';
+import { LoginDto } from './dto/login.dto';
+import { LoginResponseDto } from './dto/login-response.dto';
 import { AuthService } from './auth.service';
 import { JwtGuard } from './guards/jwt.guard';
 

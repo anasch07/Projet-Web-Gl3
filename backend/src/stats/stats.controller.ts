@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { StatsResponseDto } from './stats.dto';
+import { StatsResponseDto } from './dto/stats-response.dto';
 import { StatsService } from './stats.service';
 
 @Controller('stats')

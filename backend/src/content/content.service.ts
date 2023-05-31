@@ -2,7 +2,8 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ILike } from 'typeorm';
 
 import { CourseService } from '../course/course.service';
-import { CreateContentDto, UpdateContentDto } from './content.dto';
+import { CreateContentDto } from './dto/create-content.dto';
+import { UpdateContentDto } from './dto/update-content.dto';
 import { Content } from './content.entity';
 import { ContentQuery } from './content.query';
 

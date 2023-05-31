@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as mocks from 'node-mocks-http';
 
 import { AuthController } from './auth.controller';
-import { LoginDto } from './auth.dto';
 import { AuthService } from './auth.service';
+import { LoginDto } from './dto/login.dto';
 
 const MockService = {
   login: jest.fn().mockImplementation((loginDto: LoginDto) => {

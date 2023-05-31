@@ -10,7 +10,8 @@ import * as bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 
 import { UserService } from '../user/user.service';
-import { LoginDto, LoginResponseDto } from './auth.dto';
+import { LoginDto } from './dto/login.dto';
+import { LoginResponseDto } from './dto/login-response.dto';
 
 @Injectable()
 export class AuthService {

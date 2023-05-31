@@ -1,9 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CreateContentDto, UpdateContentDto } from 'src/content/content.dto';
-
+import { CreateContentDto } from 'src/content/dto/create-content.dto';
+import { UpdateContentDto } from 'src/content/dto/update-content.dto';
 import { ContentService } from '../content/content.service';
 import { CourseController } from './course.controller';
-import { CreateCourseDto, UpdateCourseDto } from './course.dto';
+import { CreateCourseDto } from './dto/create-course.dto';
+import { UpdateCourseDto } from './dto/update-course.dto';
+
 import { CourseService } from './course.service';
 
 const CourseMockService = {

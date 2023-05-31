@@ -3,3 +3,4 @@ export interface StatsResponseDto {
   numberOfCourses: number;
   numberOfContents: number;
 }
+  

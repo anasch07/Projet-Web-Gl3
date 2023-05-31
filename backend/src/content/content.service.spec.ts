@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { CreateContentDto, UpdateContentDto } from './content.dto';
+import { CreateContentDto } from './dto/create-content.dto';
+import { UpdateContentDto } from './dto/update-content.dto';
 import { ContentService } from './content.service';
 
 const MockService = {

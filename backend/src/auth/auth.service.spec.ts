@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import * as mocks from 'node-mocks-http';
 
-import { LoginDto } from './auth.dto';
+import { LoginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
 
 const MockService = {

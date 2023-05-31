@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { CreateCourseDto, UpdateCourseDto } from './course.dto';
 import { CourseService } from './course.service';
+import { CreateCourseDto } from './dto/create-course.dto';
+import { UpdateCourseDto } from './dto/update-course.dto';
 
 const MockService = {
   save: jest.fn().mockImplementation((createCourseDto: CreateCourseDto) => {

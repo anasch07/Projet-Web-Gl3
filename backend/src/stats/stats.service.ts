@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ContentService } from '../content/content.service';
 import { CourseService } from '../course/course.service';
 import { UserService } from '../user/user.service';
-import { StatsResponseDto } from './stats.dto';
+import { StatsResponseDto } from './dto/stats-response.dto';
 
 @Injectable()
 export class StatsService {

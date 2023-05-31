@@ -1,7 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ILike } from 'typeorm';
 
-import { CreateCourseDto, UpdateCourseDto } from './course.dto';
+import { CreateCourseDto } from './dto/create-course.dto';
+import { UpdateCourseDto } from './dto/update-course.dto';
 import { Course } from './course.entity';
 import { CourseQuery } from './course.query';
 
