@@ -8,6 +8,7 @@ import Layout from '../../components/layout';
 import Modal from '../../components/shared/Modal';
 import useAuth from '../../hooks/useAuth';
 import CreateCourseRequest from '../../models/course/CreateCourseRequest';
+import contentService from '../../services/ContentService';
 import courseService from '../../services/CourseService';
 
 export default function AddQuiz() {
@@ -18,18 +19,6 @@ export default function AddQuiz() {
   const [error, setError] = useState<string>();
 
   const { authenticatedUser } = useAuth();
-  const { data, isLoading } = useQuery(
-    ['courses', name, description],
-    () =>
-      courseService.findAll({
-        name: name || undefined,
-        description: description || undefined,
-      }),
-    {
-      refetchInterval: 1000,
-    },
-  );
-
   const {
     register,
     handleSubmit,
@@ -99,6 +88,19 @@ export default function AddQuiz() {
       event.target.value;
     setQuestions(newQuestions);
   };
+
+  const { data, isLoading } = useQuery(
+    ['courses', name, description],
+    () =>
+      courseService.findAll({
+        name: name || undefined,
+        description: description || undefined,
+      }),
+    {
+      refetchInterval: 5000,
+    },
+  );
+  console.log(data);
 
   return (
     <Layout>
