@@ -9,7 +9,7 @@ import {
 import { Content } from '../content/content.entity';
 
 @Entity()
-export class Course extends BaseEntity {
+export class Course {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

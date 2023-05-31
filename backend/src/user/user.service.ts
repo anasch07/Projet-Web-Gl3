@@ -1,14 +1,19 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { ILike } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.entity';
 import { UserQuery } from './user.query';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UserService {
+  constructor (
+    @InjectRepository(User)
+    private readonly userRepo: Repository<User>
+  ){}
   async save(createUserDto: CreateUserDto): Promise<User> {
     const user = await this.findByUsername(createUserDto.username);
 
@@ -21,7 +26,7 @@ export class UserService {
 
     const { password } = createUserDto;
     createUserDto.password = await bcrypt.hash(password, 10);
-    return User.create(createUserDto).save();
+    return this.userRepo.save(this.userRepo.create(createUserDto));
   }
 
   async findAll(userQuery: UserQuery): Promise<User[]> {
@@ -31,7 +36,7 @@ export class UserService {
       }
     });
 
-    return User.find({
+    return this.userRepo.find({
       where: userQuery,
       order: {
         firstName: 'ASC',
@@ -41,7 +46,7 @@ export class UserService {
   }
 
   async findById(id: string): Promise<User> {
-    const user = await User.findOne(id);
+    const user = await this.userRepo.findOne(id);
 
     if (!user) {
       throw new HttpException(
@@ -54,7 +59,7 @@ export class UserService {
   }
 
   async findByUsername(username: string): Promise<User> {
-    return User.findOne({ where: { username } });
+    return this.userRepo.findOne({ where: { username } });
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
@@ -78,22 +83,22 @@ export class UserService {
       }
     }
 
-    return User.create({ id, ...updateUserDto }).save();
+    return this.userRepo.save(this.userRepo.create({ id, ...updateUserDto }));
   }
 
   async delete(id: string): Promise<string> {
-    await User.delete(await this.findById(id));
+    await this.userRepo.delete(await this.findById(id));
     return id;
   }
 
   async count(): Promise<number> {
-    return await User.count();
+    return await this.userRepo.count();
   }
 
   /* Hash the refresh token and save it to the database */
   async setRefreshToken(id: string, refreshToken: string): Promise<void> {
     const user = await this.findById(id);
-    await User.update(user, {
+    await this.userRepo.update(user, {
       refreshToken: refreshToken ? await bcrypt.hash(refreshToken, 10) : null,
     });
   }

@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as bcrypt from 'bcrypt';
@@ -7,19 +7,21 @@ import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { Role } from './enums/role.enum';
 import { User } from './user/user.entity';
+import { UserService } from './user/user.service';
 
-async function createAdminOnFirstUse() {
-  const admin = await User.findOne({ where: { username: 'admin' } });
+async function createAdminOnFirstUse(app: INestApplication) {
+  const userService = app.get(UserService);
 
-  if (!admin) {
-    await User.create({
-      firstName: 'admin',
-      lastName: 'admin',
-      isActive: true,
-      username: 'admin',
+  const admin = await userService.findByUsername("admin")
+
+  if(!admin){
+    await userService.save({
+      firstName: "admin",
+      lastName: "admin",
+      password: "admin123",
       role: Role.Admin,
-      password: await bcrypt.hash('admin123', 10),
-    }).save();
+      username: "admin"
+    })
   }
 }
 
@@ -38,8 +40,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/api/docs', app, document);
 
-  await createAdminOnFirstUse();
-
+  await createAdminOnFirstUse(app);
   await app.listen(5000);
 }
 bootstrap();

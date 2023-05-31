@@ -1,15 +1,20 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { ILike } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 
 import { CourseService } from '../course/course.service';
 import { CreateContentDto } from './dto/create-content.dto';
 import { UpdateContentDto } from './dto/update-content.dto';
 import { Content } from './content.entity';
 import { ContentQuery } from './content.query';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class ContentService {
-  constructor(private readonly courseService: CourseService) {}
+  constructor(
+    private readonly courseService: CourseService,
+    @InjectRepository(Content)
+    private readonly contentRepo: Repository<Content>,
+  ) {}
 
   async save(
     courseId: string,
@@ -17,12 +22,12 @@ export class ContentService {
   ): Promise<Content> {
     const { name, description } = createContentDto;
     const course = await this.courseService.findById(courseId);
-    return await Content.create({
+    return await this.contentRepo.save(this.contentRepo.create({
       name,
       description,
       course,
       dateCreated: new Date(),
-    }).save();
+    }));
   }
 
   async findAll(contentQuery: ContentQuery): Promise<Content[]> {
@@ -30,7 +35,7 @@ export class ContentService {
       contentQuery[key] = ILike(`%${contentQuery[key]}%`);
     });
 
-    return await Content.find({
+    return await this.contentRepo.find({
       where: contentQuery,
       order: {
         name: 'ASC',
@@ -40,7 +45,7 @@ export class ContentService {
   }
 
   async findById(id: string): Promise<Content> {
-    const content = await Content.findOne(id);
+    const content = await this.contentRepo.findOne(id);
 
     if (!content) {
       throw new HttpException(
@@ -53,7 +58,7 @@ export class ContentService {
   }
 
   async findByCourseIdAndId(courseId: string, id: string): Promise<Content> {
-    const content = await Content.findOne({ where: { courseId, id } });
+    const content = await this.contentRepo.findOne({ where: { courseId, id } });
     if (!content) {
       throw new HttpException(
         `Could not find content with matching id ${id}`,
@@ -70,7 +75,7 @@ export class ContentService {
     Object.keys(contentQuery).forEach((key) => {
       contentQuery[key] = ILike(`%${contentQuery[key]}%`);
     });
-    return await Content.find({
+    return await this.contentRepo.find({
       where: { courseId, ...contentQuery },
       order: {
         name: 'ASC',
@@ -85,16 +90,18 @@ export class ContentService {
     updateContentDto: UpdateContentDto,
   ): Promise<Content> {
     const content = await this.findByCourseIdAndId(courseId, id);
-    return await Content.create({ id: content.id, ...updateContentDto }).save();
+    return await this.contentRepo.save(
+      this.contentRepo.create({ id: content.id, ...updateContentDto })
+    );
   }
 
   async delete(courseId: string, id: string): Promise<string> {
     const content = await this.findByCourseIdAndId(courseId, id);
-    await Content.delete(content);
+    await this.contentRepo.delete(content);
     return id;
   }
 
   async count(): Promise<number> {
-    return await Content.count();
+    return await this.contentRepo.count();
   }
 }
