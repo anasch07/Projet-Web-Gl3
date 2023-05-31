@@ -4,7 +4,7 @@ import { ILike, Repository } from 'typeorm';
 import { CourseService } from '../course/course.service';
 import { CreateContentDto } from './dto/create-content.dto';
 import { UpdateContentDto } from './dto/update-content.dto';
-import { Content } from './content.entity';
+import { Content } from './entities/content.entity';
 import { ContentQuery } from './content.query';
 import { InjectRepository } from '@nestjs/typeorm';
 

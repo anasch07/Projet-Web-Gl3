@@ -6,7 +6,6 @@ import * as cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module';
 import { Role } from './enums/role.enum';
-import { User } from './user/user.entity';
 import { UserService } from './user/user.service';
 
 async function createAdminOnFirstUse(app: INestApplication) {
