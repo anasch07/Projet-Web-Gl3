@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Loader, Plus, X } from 'react-feather';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
@@ -75,11 +75,36 @@ export default function AddQuiz() {
     setQuestions([...questions, NewQuestion]);
   };
 
+  const AddAnswer = (questionIndex: number) => {
+    let NewAnswer = {
+      answer: '',
+      isCorrect: false,
+    };
+    let newQuestions = [...questions];
+    newQuestions[questionIndex].answers.push(NewAnswer);
+    setQuestions(newQuestions);
+  };
+
+  const handleSaveQuiz = () => {
+    console.log(questions);
+  };
+
+  const editAnswer = (
+    questionIndex: number,
+    answerIndex: number,
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    let newQuestions = [...questions];
+    newQuestions[questionIndex].answers[answerIndex].answer =
+      event.target.value;
+    setQuestions(newQuestions);
+  };
+
   return (
     <Layout>
       <h1 className="font-semibold text-3xl mb-5">Add Quiz</h1>
       <hr />
-      <form>
+      <form onSubmit={handleSubmit(handleSaveQuiz)} className="mt-4 mb-4 p-4">
         <div className="mt-4 mb-6">
           <label
             htmlFor="email"
@@ -108,6 +133,31 @@ export default function AddQuiz() {
             key={questionIndex}
             className="border-2 border-gray-300 rounded-lg p-4 mb-4"
           >
+            <button
+              type="button"
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded "
+              onClick={() => {
+                let newQuestions = [...questions];
+                newQuestions.splice(questionIndex, 1);
+                setQuestions(newQuestions);
+              }}
+            >
+              {/*  icon to delete the question */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 inline-block"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
             <div className="mt-4 mb-6">
               <label
                 htmlFor="Question"
@@ -120,12 +170,17 @@ export default function AddQuiz() {
                 id="question"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
+                onChange={(e) => {
+                  let newQuestions = [...questions];
+                  newQuestions[questionIndex].question = e.target.value;
+                  setQuestions(newQuestions);
+                }}
               />
             </div>
             {/*      map over the answers and add them to the question and each answer is a radio button + content of the answer */}
             {question.answers.map((answer, index) => (
               <div key={index}>
-                <div className="mt-4 mb-6">
+                <div className="mt-4 mb-6 align-middle">
                   <label
                     htmlFor="Question"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -133,19 +188,53 @@ export default function AddQuiz() {
                     Answer {index + 1}
                   </label>
                   {/*  in same line there is a radio button and a text input for the answer */}
-                  <div className="flex">
+                  <div className="flex items-center">
                     <input
                       type="radio"
                       id={questionIndex.toString()}
                       name="answer"
                       value="answer"
+                      className="mr-2"
+                      onChange={(e) => {
+                        let newQuestions = [...questions];
+                        newQuestions[questionIndex].answers[index].isCorrect =
+                          e.target.checked;
+                        setQuestions(newQuestions);
+                      }}
                     />
                     <input
                       type="text"
                       id="question"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       required
+                      onChange={(e) => editAnswer(questionIndex, index, e)}
                     />
+                    {/* icon to delete the answer */}
+                    <button
+                      type="button"
+                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded  ml-1"
+                      onClick={() => {
+                        let newQuestions = [...questions];
+                        newQuestions[questionIndex].answers.splice(index, 1);
+                        setQuestions(newQuestions);
+                      }}
+                    >
+                      {/*  icon to delete the answer */}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6 inline-block"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -168,11 +257,20 @@ export default function AddQuiz() {
         ))}
         <button
           type="button"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-green-700  text-white font-bold py-2 px-4 rounded"
           onClick={() => AddQuestion()}
         >
           Add Question
         </button>
+        <div className="mt-4 mb-6">
+          {/*  put button on the right side of the form */}
+          <button
+            type="submit"
+            className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right"
+          >
+            Save Quiz
+          </button>
+        </div>
       </form>
     </Layout>
   );
