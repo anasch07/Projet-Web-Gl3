@@ -5,6 +5,7 @@ import { useQuery } from 'react-query';
 
 import CoursesTable from '../../components/courses/CoursesTable';
 import Layout from '../../components/layout';
+import QuizzesTable from '../../components/quizzes/QuizzesTable';
 import Modal from '../../components/shared/Modal';
 import useAuth from '../../hooks/useAuth';
 import CreateCourseRequest from '../../models/course/CreateCourseRequest';
@@ -29,23 +30,6 @@ export default function QuizzesTeacher() {
       refetchInterval: 1000,
     },
   );
-
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting },
-    reset,
-  } = useForm<CreateCourseRequest>();
-
-  const saveCourse = async (createCourseRequest: CreateCourseRequest) => {
-    try {
-      await courseService.save(createCourseRequest);
-      reset();
-      setError(null);
-    } catch (error) {
-      setError(error.response.data.message);
-    }
-  };
 
   return (
     <Layout>
@@ -80,7 +64,7 @@ export default function QuizzesTeacher() {
         </div>
       </div>
 
-      <CoursesTable data={data} isLoading={isLoading} />
+      <QuizzesTable data={data} isLoading={isLoading} />
     </Layout>
   );
 }

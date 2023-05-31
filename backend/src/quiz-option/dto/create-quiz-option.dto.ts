@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateQuizOptionDto {
   @IsNotEmpty()
@@ -8,4 +8,7 @@ export class CreateQuizOptionDto {
   @IsNotEmpty()
   @IsString()
   questionId: string;
+
+  @IsBoolean()
+  isCorrect: boolean;
 }

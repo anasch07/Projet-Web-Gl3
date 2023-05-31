@@ -6,7 +6,10 @@ import apiService from './ApiService';
 
 class QuizService {
   async save(data: any): Promise<void> {
-    await apiService.post('/api/courses', data);
+    return await apiService.post('/api/quiz', data);
+  }
+  async findAll(): Promise<any> {
+    return (await apiService.get<any>('/api/quiz')).data;
   }
 }
 

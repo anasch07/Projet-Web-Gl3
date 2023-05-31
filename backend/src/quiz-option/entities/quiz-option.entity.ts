@@ -1,5 +1,5 @@
-import { QuizQuestion } from "src/quiz-question/entities/quiz-question.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { QuizQuestion } from 'src/quiz-question/entities/quiz-question.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class QuizOption {
@@ -10,5 +10,8 @@ export class QuizOption {
   display: string;
 
   @ManyToOne(() => QuizQuestion)
-  question: QuizQuestion
+  question: QuizQuestion;
+
+  @Column({ default: false })
+  isCorrect: boolean;
 }

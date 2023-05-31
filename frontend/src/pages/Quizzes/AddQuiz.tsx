@@ -28,9 +28,9 @@ export default function AddQuiz() {
   const [questions, setQuestions] = useState([
     {
       question: '',
-      answers: [
+      options: [
         {
-          answer: '',
+          option: '',
           isCorrect: false,
         },
       ],
@@ -40,9 +40,9 @@ export default function AddQuiz() {
   const AddQuestion = () => {
     let NewQuestion = {
       question: '',
-      answers: [
+      options: [
         {
-          answer: '',
+          option: '',
           isCorrect: false,
         },
       ],
@@ -52,11 +52,11 @@ export default function AddQuiz() {
 
   const AddAnswer = (questionIndex: number) => {
     let NewAnswer = {
-      answer: '',
+      option: '',
       isCorrect: false,
     };
     let newQuestions = [...questions];
-    newQuestions[questionIndex].answers.push(NewAnswer);
+    newQuestions[questionIndex].options.push(NewAnswer);
     setQuestions(newQuestions);
   };
 
@@ -73,17 +73,21 @@ export default function AddQuiz() {
     });
   }, []);
 
-  const handleSaveQuiz = (e) => {
+  const handleSaveQuiz = async (e) => {
     e.preventDefault();
-    console.log(chapterId);
-    console.log(questions);
-    console.log(title);
-    console.log(description);
-    console.log(scheduleDate);
-    console.log(deadlineDate);
-    const response = QuizService.save({
+    const response = await QuizService.save({
       chapterId: chapterId,
+      questions: questions,
+      title: title,
+      description: description,
+      scheduleDate: scheduleDate,
+      deadlineDate: deadlineDate,
     });
+    if (response.status === 201) {
+      window.location.href = '/QuizzesTeacher';
+    } else {
+      setError("Couldn't add quiz verify your data");
+    }
   };
 
   const editAnswer = (
@@ -92,7 +96,7 @@ export default function AddQuiz() {
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     let newQuestions = [...questions];
-    newQuestions[questionIndex].answers[answerIndex].answer =
+    newQuestions[questionIndex].options[answerIndex].option =
       event.target.value;
     setQuestions(newQuestions);
   };
@@ -194,7 +198,7 @@ export default function AddQuiz() {
           />
         </div>
 
-        {/*I want that the teacher add questions and answers as much as he wants , so there is a button to add a question and a button to add an answer */}
+        {/*I want that the teacher add questions and options as much as he wants , so there is a button to add a question and a button to add an option */}
 
         {questions.map((question, questionIndex) => (
           <div
@@ -245,7 +249,7 @@ export default function AddQuiz() {
                 }}
               />
             </div>
-            {question.answers.map((answer, index) => (
+            {question.options.map((option, index) => (
               <div key={index}>
                 <div className="mt-4 mb-6 align-middle">
                   <label
@@ -259,16 +263,16 @@ export default function AddQuiz() {
                       type="radio"
                       id={questionIndex.toString().concat('question')}
                       name={questionIndex.toString().concat('question')}
-                      value="answer"
+                      value="option"
                       className="mr-2"
                       onChange={(e) => {
                         let newQuestions = [...questions];
-                        //make all the other answers of the question false
-                        newQuestions[questionIndex].answers.forEach(
-                          (answer) => (answer.isCorrect = false),
+                        //make all the other options of the question false
+                        newQuestions[questionIndex].options.forEach(
+                          (option) => (option.isCorrect = false),
                         );
-                        //make the answer that the teacher choose true
-                        newQuestions[questionIndex].answers[index].isCorrect =
+                        //make the option that the teacher choose true
+                        newQuestions[questionIndex].options[index].isCorrect =
                           e.target.checked;
                         setQuestions(newQuestions);
                       }}
@@ -280,17 +284,17 @@ export default function AddQuiz() {
                       required
                       onChange={(e) => editAnswer(questionIndex, index, e)}
                     />
-                    {/* icon to delete the answer */}
+                    {/* icon to delete the option */}
                     <button
                       type="button"
                       className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded  ml-1"
                       onClick={() => {
                         let newQuestions = [...questions];
-                        newQuestions[questionIndex].answers.splice(index, 1);
+                        newQuestions[questionIndex].options.splice(index, 1);
                         setQuestions(newQuestions);
                       }}
                     >
-                      {/*  icon to delete the answer */}
+                      {/*  icon to delete the option */}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-6 w-6 inline-block"
@@ -315,8 +319,8 @@ export default function AddQuiz() {
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               onClick={() => {
                 let newQuestions = [...questions];
-                newQuestions[questionIndex].answers.push({
-                  answer: '',
+                newQuestions[questionIndex].options.push({
+                  option: '',
                   isCorrect: false,
                 });
                 setQuestions(newQuestions);
