@@ -1,26 +1,38 @@
 import { Injectable } from '@nestjs/common';
 import { CreateQuizCommentDto } from './dto/create-quiz-comment.dto';
+
+import { InjectRepository } from '@nestjs/typeorm';
+import { QuizComment } from './entities/quiz-comment.entity';
+import { Repository } from 'typeorm';
 import { UpdateQuizCommentDto } from './dto/update-quiz-comment.dto';
 
 @Injectable()
 export class QuizCommentService {
-  create(createQuizCommentDto: CreateQuizCommentDto) {
-    return 'This action adds a new quizComment';
+  constructor(
+    @InjectRepository(QuizComment)
+    private quizCommentRepository: Repository<QuizComment>,
+  ) {}
+
+
+  async create(createQuizCommentDto: CreateQuizCommentDto) {
+    return this.quizCommentRepository.save(createQuizCommentDto);
   }
 
   findAll() {
-    return `This action returns all quizComment`;
+    return this.quizCommentRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} quizComment`;
+  findOne(id: string) {
+    return this.quizCommentRepository.findOne(id);
   }
 
-  update(id: number, updateQuizCommentDto: UpdateQuizCommentDto) {
-    return `This action updates a #${id} quizComment`;
+  update(id: string, updateQuizCommentDto: UpdateQuizCommentDto) {
+    return this.quizCommentRepository.update(id, {
+      comment: updateQuizCommentDto.comment,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} quizComment`;
+  remove(id: string) {
+    return this.quizCommentRepository.delete(id);
   }
 }
