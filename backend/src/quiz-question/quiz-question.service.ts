@@ -7,6 +7,7 @@ import { EntityManager, Repository } from 'typeorm';
 import { QuizOption } from 'src/quiz-option/entities/quiz-option.entity';
 import { QuizOptionService } from 'src/quiz-option/quiz-option.service';
 import { CreateQuizOptionDto } from 'src/quiz-option/dto/create-quiz-option.dto';
+import { Quiz } from 'src/quiz/entities/quiz.entity';
 
 
 
@@ -21,7 +22,7 @@ export class QuizQuestionService {
     private quizOptionService: QuizOptionService
   ) {}
 
-  async create(createQuizQuestionDto: CreateQuizQuestionDto, quizId: string, entityManager?: EntityManager) {
+  async create(createQuizQuestionDto: CreateQuizQuestionDto, quiz: Quiz, entityManager?: EntityManager) {
     //---- create a new question
     const { question, mark, options } = createQuizQuestionDto;
     if(options?.length < 1) throw new Error('A question must have at least one option');
@@ -32,9 +33,11 @@ export class QuizQuestionService {
     newQuestion.correctOption = null;
     newQuestion.wrongOptions = [];
 
+    newQuestion.quiz = quiz
+
     //---- save the question
-    const savedQuestion = await entityManager?.save({...newQuestion, quizId}) 
-                          || await this.quizQuestionRepository.save({...newQuestion, quizId});
+    const savedQuestion = await entityManager?.save(newQuestion) 
+                          || await this.quizQuestionRepository.save(newQuestion);
 
 
     //---- create wrong options
