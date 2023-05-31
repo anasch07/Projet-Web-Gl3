@@ -15,14 +15,14 @@ import { JwtGuard } from '../auth/guards/jwt.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { CreateContentDto } from 'src/content/dto/create-content.dto';
 import { UpdateContentDto } from 'src/content/dto/update-content.dto';
-import { Content } from '../content/content.entity';
+import { Content } from '../content/entities/content.entity';
 import { ContentQuery } from '../content/content.query';
 import { ContentService } from '../content/content.service';
 import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../enums/role.enum';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
-import { Course } from './course.entity';
+import { Course } from './entities/course.entity';
 import { CourseQuery } from './course.query';
 import { CourseService } from './course.service';
 

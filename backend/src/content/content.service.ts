@@ -4,9 +4,10 @@ import { ILike, Repository } from 'typeorm';
 import { CourseService } from '../course/course.service';
 import { CreateContentDto } from './dto/create-content.dto';
 import { UpdateContentDto } from './dto/update-content.dto';
-import { Content } from './content.entity';
+import { Content } from './entities/content.entity';
 import { ContentQuery } from './content.query';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Course } from 'src/course/entities/course.entity';
 
 @Injectable()
 export class ContentService {
@@ -66,6 +67,12 @@ export class ContentService {
       );
     }
     return content;
+  }
+
+  async findAllContent(): Promise<Content[]>{
+    const query = this.contentRepo.createQueryBuilder("content")
+      .innerJoinAndSelect(Course, "course", "content.courseId = course.id")
+    return await query.getMany();
   }
 
   async findAllByCourseId(

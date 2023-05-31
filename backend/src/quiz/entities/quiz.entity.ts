@@ -1,4 +1,4 @@
-import { Content } from "src/content/content.entity";
+import { Content } from "src/content/entities/content.entity";
 import { QuizSubmission } from "src/quiz-submission/entities/quiz-submission.entity";
 import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 

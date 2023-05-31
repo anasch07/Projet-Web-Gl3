@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { Content } from '../content/content.entity';
+import { Content } from '../../content/entities/content.entity';
 
 @Entity()
 export class Course {

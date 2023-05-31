@@ -1,7 +1,7 @@
 import { Exclude } from 'class-transformer';
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Role } from '../enums/role.enum';
+import { Role } from '../../enums/role.enum';
 import { QuizSubmission } from 'src/quiz-submission/entities/quiz-submission.entity';
 
 @Entity()
