@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Quiz } from 'src/quiz/entities/quiz.entity';
 import { CreateQuizOptionDto } from 'src/quiz-option/dto/create-quiz-option.dto';
@@ -15,8 +15,6 @@ export class QuizQuestionService {
   constructor(
     @InjectRepository(QuizQuestion)
     private quizQuestionRepository: Repository<QuizQuestion>,
-    @InjectRepository(QuizOption)
-    private quizOptionRepository: Repository<QuizOption>,
     @Inject(QuizOptionService)
     private quizOptionService: QuizOptionService,
   ) {}
@@ -71,6 +69,14 @@ export class QuizQuestionService {
       where: { quizId },
       relations: ['correctOption', 'wrongOptions'],
     });
+  }
+
+  async findOne(id:string){
+    const question = await this.quizQuestionRepository.findOne(id);
+    if (!question) {
+      throw new NotFoundException("question not found")
+    }
+    return question;
   }
 
   update(id: string, updateQuizQuestionDto: UpdateQuizQuestionDto) {

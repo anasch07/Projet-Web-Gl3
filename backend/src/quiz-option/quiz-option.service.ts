@@ -5,6 +5,7 @@ import { EntityManager, Repository } from 'typeorm';
 import { CreateQuizOptionDto } from './dto/create-quiz-option.dto';
 import { UpdateQuizOptionDto } from './dto/update-quiz-option.dto';
 import { QuizOption } from './entities/quiz-option.entity';
+import { QuizQuestion } from 'src/quiz-question/entities/quiz-question.entity';
 
 @Injectable()
 export class QuizOptionService {

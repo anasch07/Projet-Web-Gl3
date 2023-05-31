@@ -9,6 +9,9 @@ export class QuizOption {
   @Column()
   display: string;
 
+  @Column()
+  questionId: string;
+
   @ManyToOne(() => QuizQuestion)
   question: QuizQuestion;
 
