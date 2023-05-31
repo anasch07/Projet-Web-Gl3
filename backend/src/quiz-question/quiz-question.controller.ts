@@ -8,27 +8,22 @@ export class QuizQuestionController {
   constructor(private readonly quizQuestionService: QuizQuestionService) {}
 
   @Post()
-  create(@Body() createQuizQuestionDto: CreateQuizQuestionDto) {
-    return this.quizQuestionService.create(createQuizQuestionDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.quizQuestionService.findAll();
+  create(@Body() createQuizQuestionDto: CreateQuizQuestionDto, @Param('quizId') quizId: string) {
+    return this.quizQuestionService.create(createQuizQuestionDto, quizId);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.quizQuestionService.findOne(+id);
+  findByQuizID(@Param('id') quizId: string) {
+    return this.quizQuestionService.findByQuizID(quizId);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateQuizQuestionDto: UpdateQuizQuestionDto) {
-    return this.quizQuestionService.update(+id, updateQuizQuestionDto);
+    return this.quizQuestionService.update(id, updateQuizQuestionDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.quizQuestionService.remove(+id);
+    return this.quizQuestionService.remove(id);
   }
 }

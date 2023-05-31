@@ -1,5 +1,6 @@
 import { Quiz } from "src/quiz/entities/quiz.entity";
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/user/entities/user.entity";
+import { BaseEntity, Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class QuizComment {
@@ -11,4 +12,7 @@ export class QuizComment {
 
   @ManyToOne(() => Quiz)
   quiz: Quiz
+
+  @ManyToOne(() => User)
+  user: User 
 }
