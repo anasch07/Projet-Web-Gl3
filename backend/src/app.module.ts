@@ -7,6 +7,11 @@ import { ContentModule } from './content/content.module';
 import { CourseModule } from './course/course.module';
 import { StatsModule } from './stats/stats.module';
 import { UserModule } from './user/user.module';
+import { QuizModule } from './quiz/quiz.module';
+import { QuizSubmissionModule } from './quiz-submission/quiz-submission.module';
+import { QuizCommentModule } from './quiz-comment/quiz-comment.module';
+import { QuizQuestionModule } from './quiz-question/quiz-question.module';
+import { QuizOptionModule } from './quiz-option/quiz-option.module';
 
 @Module({
   imports: [
@@ -30,6 +35,11 @@ import { UserModule } from './user/user.module';
     CourseModule,
     ContentModule,
     StatsModule,
+    QuizModule,
+    QuizSubmissionModule,
+    QuizCommentModule,
+    QuizQuestionModule,
+    QuizOptionModule,
   ],
   controllers: [],
   providers: [],
