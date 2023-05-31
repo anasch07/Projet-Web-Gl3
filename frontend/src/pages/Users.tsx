@@ -170,8 +170,8 @@ export default function Users() {
             {...register('role')}
             disabled={isSubmitting}
           >
-            <option value="student">Student</option>
-            <option value="teacher">Teacher</option>
+            <option value="user">User</option>
+            <option value="editor">Editor</option>
             <option value="admin">Admin</option>
           </select>
           <button className="btn" disabled={isSubmitting}>
