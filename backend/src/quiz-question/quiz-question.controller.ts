@@ -7,10 +7,10 @@ import { UpdateQuizQuestionDto } from './dto/update-quiz-question.dto';
 export class QuizQuestionController {
   constructor(private readonly quizQuestionService: QuizQuestionService) {}
 
-  @Post()
-  create(@Body() createQuizQuestionDto: CreateQuizQuestionDto, @Param('quizId') quizId: string) {
-    return this.quizQuestionService.create(createQuizQuestionDto, quizId);
-  }
+  // @Post()
+  // create(@Body() createQuizQuestionDto: CreateQuizQuestionDto, @Param('quizId') quizId: string) {
+  //   return this.quizQuestionService.create(createQuizQuestionDto, quizId);
+  // }
 
   @Get(':id')
   findByQuizID(@Param('id') quizId: string) {

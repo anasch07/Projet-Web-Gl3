@@ -32,11 +32,10 @@ export class QuizService {
     const chapter = await this.contentService.findById(createQuizDto.chapterId)
     if(!chapter) throw new NotFoundException("invalid chapter id")
     newQuiz.chaptre = chapter
-
     const quiz = await queryRunner.manager.save(newQuiz)
 
     await Promise.all(createQuizDto.questions.map(async (question) => {
-      return await this.questionService.create(question, quiz.id, queryRunner.manager)
+      return await this.questionService.create(question, quiz, queryRunner.manager)
     }))
 
     await queryRunner.commitTransaction()
