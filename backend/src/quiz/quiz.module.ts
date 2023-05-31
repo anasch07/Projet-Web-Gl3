@@ -15,6 +15,9 @@ import { ContentModule } from 'src/content/content.module';
     ),
     QuizQuestionModule,
     ContentModule,
+  ],
+  exports: [
+    QuizService
   ]
 })
 export class QuizModule {}
