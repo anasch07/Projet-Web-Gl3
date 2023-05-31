@@ -12,23 +12,23 @@ export class QuizOptionController {
     return this.quizOptionService.create(createQuizOptionDto);
   }
 
-  @Get()
-  findAll() {
-    return this.quizOptionService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.quizOptionService.findAll();
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.quizOptionService.findOne(+id);
+    return this.quizOptionService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateQuizOptionDto: UpdateQuizOptionDto) {
-    return this.quizOptionService.update(+id, updateQuizOptionDto);
+    return this.quizOptionService.update(id, updateQuizOptionDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.quizOptionService.remove(+id);
+    return this.quizOptionService.remove(id);
   }
 }
