@@ -4,6 +4,9 @@ import { QuizSubmissionController } from './quiz-submission.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { QuizSubmission } from './entities/quiz-submission.entity';
 import { UserAnswers } from './entities/submission-answer.entity';
+import { QuizModule } from 'src/quiz/quiz.module';
+import { QuizQuestionService } from 'src/quiz-question/quiz-question.service';
+import { QuizOptionService } from 'src/quiz-option/quiz-option.service';
 
 @Module({
   controllers: [QuizSubmissionController],
@@ -11,7 +14,10 @@ import { UserAnswers } from './entities/submission-answer.entity';
   imports: [
     TypeOrmModule.forFeature(
       [QuizSubmission, UserAnswers]
-    )
+    ),
+    QuizModule,
+    QuizQuestionService,
+    QuizOptionService
   ]
 })
 export class QuizSubmissionModule {}

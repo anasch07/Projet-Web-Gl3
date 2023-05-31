@@ -2,15 +2,18 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { QuizSubmissionService } from './quiz-submission.service';
 import { CreateQuizSubmissionDto } from './dto/create-quiz-submission.dto';
 import { UpdateQuizSubmissionDto } from './dto/update-quiz-submission.dto';
+import { get } from 'http';
 
 @Controller('quiz-submission')
 export class QuizSubmissionController {
   constructor(private readonly quizSubmissionService: QuizSubmissionService) {}
 
   @Post()
-  create(@Body() createQuizSubmissionDto: CreateQuizSubmissionDto) {
+  createQuizResponse(@Body() createQuizSubmissionDto: CreateQuizSubmissionDto) {
     return this.quizSubmissionService.create(createQuizSubmissionDto);
   }
+  
+
 
   @Get()
   findAll() {
