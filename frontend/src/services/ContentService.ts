@@ -16,6 +16,10 @@ class ContentService {
     ).data;
   }
 
+  async findAllWithCourses(): Promise<any> {
+    return (await apiService.get<Content[]>('/api/content', {})).data;
+  }
+
   async save(
     courseId: string,
     createContentRequest: CreateContentRequest,

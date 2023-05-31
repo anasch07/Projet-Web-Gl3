@@ -1,13 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Course } from 'src/course/entities/course.entity';
 import { ILike, Repository } from 'typeorm';
 
 import { CourseService } from '../course/course.service';
+import { ContentQuery } from './content.query';
 import { CreateContentDto } from './dto/create-content.dto';
 import { UpdateContentDto } from './dto/update-content.dto';
 import { Content } from './entities/content.entity';
-import { ContentQuery } from './content.query';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Course } from 'src/course/entities/course.entity';
 
 @Injectable()
 export class ContentService {
@@ -23,12 +23,14 @@ export class ContentService {
   ): Promise<Content> {
     const { name, description } = createContentDto;
     const course = await this.courseService.findById(courseId);
-    return await this.contentRepo.save(this.contentRepo.create({
-      name,
-      description,
-      course,
-      dateCreated: new Date(),
-    }));
+    return await this.contentRepo.save(
+      this.contentRepo.create({
+        name,
+        description,
+        course,
+        dateCreated: new Date(),
+      }),
+    );
   }
 
   async findAll(contentQuery: ContentQuery): Promise<Content[]> {
@@ -69,9 +71,13 @@ export class ContentService {
     return content;
   }
 
-  async findAllContent(): Promise<Content[]>{
-    const query = this.contentRepo.createQueryBuilder("content")
-      .innerJoinAndSelect(Course, "course", "content.courseId = course.id")
+  async findAllContent(): Promise<Content[]> {
+    //return all contents with their courses
+    const query = this.contentRepo
+      .createQueryBuilder('content')
+      .leftJoinAndSelect('content.course', 'course')
+      .orderBy('content.name', 'ASC')
+      .addOrderBy('content.description', 'ASC');
     return await query.getMany();
   }
 
@@ -98,7 +104,7 @@ export class ContentService {
   ): Promise<Content> {
     const content = await this.findByCourseIdAndId(courseId, id);
     return await this.contentRepo.save(
-      this.contentRepo.create({ id: content.id, ...updateContentDto })
+      this.contentRepo.create({ id: content.id, ...updateContentDto }),
     );
   }
 

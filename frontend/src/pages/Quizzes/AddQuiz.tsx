@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Loader, Plus, X } from 'react-feather';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
@@ -9,36 +9,22 @@ import Modal from '../../components/shared/Modal';
 import useAuth from '../../hooks/useAuth';
 import CreateCourseRequest from '../../models/course/CreateCourseRequest';
 import contentService from '../../services/ContentService';
+import ContentService from '../../services/ContentService';
 import courseService from '../../services/CourseService';
+import QuizService from '../../services/QuizService';
 
 export default function AddQuiz() {
-  const [name, setName] = useState('');
+  const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [scheduleDate, setScheduleDate] = useState<Date>();
+  const [deadlineDate, setDeadlineDate] = useState<Date>();
+  const [chapterId, setChapterId] = useState<string>();
 
   const [addCourseShow, setAddCourseShow] = useState<boolean>(false);
   const [error, setError] = useState<string>();
-
+  const [data, setData] = useState<any>([]); // <== add this line
   const { authenticatedUser } = useAuth();
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting },
-    reset,
-  } = useForm<CreateCourseRequest>();
 
-  const saveCourse = async (createCourseRequest: CreateCourseRequest) => {
-    try {
-      await courseService.save(createCourseRequest);
-      setAddCourseShow(false);
-      reset();
-      setError(null);
-    } catch (error) {
-      setError(error.response.data.message);
-    }
-  };
-  {
-    /*  form that contains the chapter , then the teacher cann add questions and answers(radios buttons) as much as he wants */
-  }
   const [questions, setQuestions] = useState([
     {
       question: '',
@@ -74,8 +60,30 @@ export default function AddQuiz() {
     setQuestions(newQuestions);
   };
 
-  const handleSaveQuiz = () => {
+  // const data: any = ContentService.findAllWithCourses().then((res) => {
+  //   console.log('res: ', res);
+  //   return res;
+  // });
+
+  useEffect(() => {
+    ContentService.findAllWithCourses().then((res) => {
+      console.log('res: ', res);
+      setData(res);
+      setChapterId(res[0].id);
+    });
+  }, []);
+
+  const handleSaveQuiz = (e) => {
+    e.preventDefault();
+    console.log(chapterId);
     console.log(questions);
+    console.log(title);
+    console.log(description);
+    console.log(scheduleDate);
+    console.log(deadlineDate);
+    const response = QuizService.save({
+      chapterId: chapterId,
+    });
   };
 
   const editAnswer = (
@@ -89,24 +97,11 @@ export default function AddQuiz() {
     setQuestions(newQuestions);
   };
 
-  const { data, isLoading } = useQuery(
-    ['courses', name, description],
-    () =>
-      courseService.findAll({
-        name: name || undefined,
-        description: description || undefined,
-      }),
-    {
-      refetchInterval: 5000,
-    },
-  );
-  console.log(data);
-
   return (
     <Layout>
       <h1 className="font-semibold text-3xl mb-5">Add Quiz</h1>
       <hr />
-      <form onSubmit={handleSubmit(handleSaveQuiz)} className="mt-4 mb-4 p-4">
+      <form onSubmit={handleSaveQuiz} className="mt-4 mb-4 p-4">
         <div className="mt-4 mb-6">
           <label
             htmlFor="email"
@@ -119,13 +114,84 @@ export default function AddQuiz() {
             id="chapter"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             required
+            onChange={(e) => setChapterId(e.target.value)}
           >
-            <option value="chapter1">Chapter 1</option>
-            <option value="chapter2">Chapter 2</option>
-            <option value="chapter3">Chapter 3</option>
-            <option value="chapter4">Chapter 4</option>
-            <option value="chapter5">Chapter 5</option>
+            {data && data.length > 0 ? (
+              data.map((item: any) => {
+                return (
+                  <option key={item.id} value={item.id}>
+                    {item.name} | {item.course.name}
+                  </option>
+                );
+              })
+            ) : (
+              <option value="test">No Chapters</option>
+            )}
           </select>
+        </div>
+
+        <div className="mt-4 mb-6">
+          <label
+            htmlFor="Title"
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >
+            Title
+          </label>
+          <input
+            type="text"
+            id="title"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Title"
+            required
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
+        <div className="mt-4 mb-6">
+          <label
+            htmlFor="description"
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >
+            Description
+          </label>
+          <textarea
+            id="description"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Description"
+            required
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+        <div className="mt-4 mb-6">
+          <label
+            htmlFor="scheduleDate"
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >
+            Schedule Date
+          </label>
+          <input
+            type="date"
+            id="scheduleDate"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Schedule Date"
+            required
+            onChange={(e) => setScheduleDate(new Date(e.target.value))}
+          />
+        </div>
+        <div className="mt-4 mb-6">
+          <label
+            htmlFor="scheduleTime"
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >
+            Deadline Date
+          </label>
+          <input
+            type="date"
+            id="scheduleTime"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Schedule Time"
+            required
+            onChange={(e) => setDeadlineDate(new Date(e.target.value))}
+          />
         </div>
 
         {/*I want that the teacher add questions and answers as much as he wants , so there is a button to add a question and a button to add an answer */}
@@ -179,7 +245,6 @@ export default function AddQuiz() {
                 }}
               />
             </div>
-            {/*      map over the answers and add them to the question and each answer is a radio button + content of the answer */}
             {question.answers.map((answer, index) => (
               <div key={index}>
                 <div className="mt-4 mb-6 align-middle">
@@ -189,16 +254,20 @@ export default function AddQuiz() {
                   >
                     Answer {index + 1}
                   </label>
-                  {/*  in same line there is a radio button and a text input for the answer */}
                   <div className="flex items-center">
                     <input
                       type="radio"
-                      id={questionIndex.toString()}
-                      name="answer"
+                      id={questionIndex.toString().concat('question')}
+                      name={questionIndex.toString().concat('question')}
                       value="answer"
                       className="mr-2"
                       onChange={(e) => {
                         let newQuestions = [...questions];
+                        //make all the other answers of the question false
+                        newQuestions[questionIndex].answers.forEach(
+                          (answer) => (answer.isCorrect = false),
+                        );
+                        //make the answer that the teacher choose true
                         newQuestions[questionIndex].answers[index].isCorrect =
                           e.target.checked;
                         setQuestions(newQuestions);
