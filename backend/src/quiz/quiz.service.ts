@@ -85,8 +85,14 @@ export class QuizService {
   }
 
   async delete(id: string): Promise<string> {
-    const course = await this.findOne(id);
-    await this.quizRepo.delete(course);
+    const quiz = await this.findOne(id);
+    const quiz1=await this.quizRepo.findOne(id)
+  const list =quiz1.questions
+  for(let idx=0; idx<list.length; idx++){
+    await this.questionService.remove(list[idx].id)
+  }
+    //console.log(quiz)
+    await this.quizRepo.remove(quiz1);
     return id;
   }
 

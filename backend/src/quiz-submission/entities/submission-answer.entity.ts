@@ -6,15 +6,15 @@ import { QuizSubmission } from "./quiz-submission.entity";
 @Entity()
 @Index(["question", "answer", "submission"], { unique: true })
 export class UserAnswers {
-  @ManyToOne(() => QuizQuestion, { nullable: false, primary: true })
+  @ManyToOne(() => QuizQuestion, { nullable: false, primary: true})
   @JoinColumn({name: "questionId",})
   question: QuizQuestion;
   
-  @ManyToOne(() => QuizOption, { nullable: false, primary: true })
+  @ManyToOne(() => QuizOption, { nullable: false, primary: true})
   @JoinColumn({name: "answerId",})
   answer: QuizOption;
 
-  @ManyToOne(() => QuizSubmission, { nullable: false, primary: true })
+  @ManyToOne(() => QuizSubmission, { nullable: false, primary: true})
   @JoinColumn({name: "submissionId",})
   submission: QuizSubmission;
 }
