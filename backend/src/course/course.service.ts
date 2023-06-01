@@ -1,6 +1,5 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ILike, Repository } from 'typeorm';
-
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { Course } from './entities/course.entity';
@@ -36,10 +35,7 @@ export class CourseService {
   async findById(id: string): Promise<Course> {
     const course = await this.courseRepo.findOne(id);
     if (!course) {
-      throw new HttpException(
-        `Could not find course with matching id ${id}`,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new NotFoundException(`Could not find course with matching id ${id}`)
     }
     return course;
   }
