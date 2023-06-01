@@ -12,6 +12,8 @@ import { Request, Response } from 'express';
 import { UserService } from '../user/user.service';
 import { LoginDto } from './dto/login.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { Role } from 'src/enums/role.enum';
 
 @Injectable()
 export class AuthService {
@@ -67,6 +69,11 @@ export class AuthService {
     await this.userService.setRefreshToken(userId, null);
     response.clearCookie('refresh-token');
     return true;
+  }
+
+  async register(registerDto: CreateUserDto) {
+    const {role, ...data} = registerDto
+    return await this.userService.save({...data, role: Role.Student})
   }
 
   async refresh(

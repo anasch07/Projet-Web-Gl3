@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { ILike, Repository } from 'typeorm';
 
@@ -18,10 +18,7 @@ export class UserService {
     const user = await this.findByUsername(createUserDto.username);
 
     if (user) {
-      throw new HttpException(
-        `User with username ${createUserDto.username} is already exists`,
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException(`User with username ${createUserDto.username} is already exists`);
     }
 
     const { password } = createUserDto;
