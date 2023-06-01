@@ -31,11 +31,11 @@ export default function Login() {
 
   return (
     <div className="h-full flex justify-center items-center">
-      <div className="card shadow">
+      <div className="card w-1/4 shadow ml-4 mr-4">
         <h1 className="mb-3 text-center font-semibold text-4xl">Login</h1>
         <hr />
         <form
-          className="flex flex-col gap-5 mt-8 w-64"
+          className="flex flex-col gap-5 mt-8 ml-8 mr-8"
           onSubmit={handleSubmit(onSubmit)}
         >
           <input
