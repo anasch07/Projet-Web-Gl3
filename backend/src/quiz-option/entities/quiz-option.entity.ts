@@ -10,7 +10,7 @@ export class QuizOption extends BaseEntity {
   @Column()
   questionId: string;
 
-  @ManyToOne(() => QuizQuestion)
+  @ManyToOne(() => QuizQuestion, (ques) => ques.options)
   question: QuizQuestion;
 
   @Column({ default: false })

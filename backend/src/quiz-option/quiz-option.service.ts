@@ -31,11 +31,11 @@ export class QuizOptionService {
     return opt;
   }
 
-  update(id: string, updateQuizOptionDto: UpdateQuizOptionDto) {
-    return this.quizOptionRepository.update(id, updateQuizOptionDto);
+  update(id: string, updateQuizOptionDto: UpdateQuizOptionDto, manager?: EntityManager) {
+    return manager?.update(QuizOption, id, updateQuizOptionDto) || this.quizOptionRepository.update(id, updateQuizOptionDto);
   }
 
-  remove(id: string) {
-    return this.quizOptionRepository.delete(id);
+  remove(id: string, manager?: EntityManager) {
+    return manager?.delete(QuizOption, id) || this.quizOptionRepository.delete(id);
   }
 }

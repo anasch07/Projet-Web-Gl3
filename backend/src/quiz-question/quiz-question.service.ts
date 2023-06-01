@@ -79,11 +79,18 @@ export class QuizQuestionService {
     return question;
   }
 
-  update(id: string, updateQuizQuestionDto: UpdateQuizQuestionDto) {
-    return this.quizQuestionRepository.update(id, updateQuizQuestionDto);
+  async update(id: string, updateQuizQuestionDto: UpdateQuizQuestionDto, manager?: EntityManager) {
+    return await (
+      manager?.update(QuizQuestion, id, updateQuizQuestionDto) || 
+      this.quizQuestionRepository.update(id, updateQuizQuestionDto)
+    );
   }
 
-  remove(id: string) {
-    return this.quizQuestionRepository.delete(id);
+  async remove(id: string, manager?: EntityManager) {
+    const savedQuestion = await(
+      manager?.delete(QuizQuestion, id) ||
+      await this.quizQuestionRepository.delete(id)
+    );
+    return savedQuestion
   }
 }

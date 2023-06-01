@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Quiz } from './entities/quiz.entity';
 import { QuizQuestionModule } from 'src/quiz-question/quiz-question.module';
 import { ContentModule } from 'src/content/content.module';
+import { QuizOptionModule } from 'src/quiz-option/quiz-option.module';
 
 @Module({
   controllers: [QuizController],
@@ -15,6 +16,7 @@ import { ContentModule } from 'src/content/content.module';
     ),
     QuizQuestionModule,
     ContentModule,
+    QuizOptionModule,
   ],
   exports: [
     QuizService

@@ -31,7 +31,7 @@ export class Quiz extends BaseEntity {
   @ManyToOne((type) => Content)
   chaptre: Content;
 
-  @OneToMany((type) => QuizQuestion, (question) => question.quiz, {
+  @OneToMany((type) => QuizQuestion, (question) => question.quizId, {
     eager: true,
   })
   questions: QuizQuestion[];
