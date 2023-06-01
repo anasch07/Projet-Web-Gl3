@@ -1,7 +1,6 @@
 import { Content } from 'src/content/entities/content.entity';
 import { QuizSubmission } from 'src/quiz-submission/entities/quiz-submission.entity';
 import {
-  BaseEntity,
   Column,
   Entity,
   ManyToOne,
@@ -10,12 +9,10 @@ import {
 } from 'typeorm';
 
 import { QuizQuestion } from '../../quiz-question/entities/quiz-question.entity';
+import { BaseEntity } from 'src/common/base-entity';
 
 @Entity()
-export class Quiz {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Quiz extends BaseEntity {
   @Column()
   title: string;
 

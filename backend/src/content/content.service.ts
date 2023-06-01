@@ -28,7 +28,6 @@ export class ContentService {
         name,
         description,
         course,
-        dateCreated: new Date(),
       }),
     );
   }

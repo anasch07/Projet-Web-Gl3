@@ -12,6 +12,7 @@ import { QuizSubmissionModule } from './quiz-submission/quiz-submission.module';
 import { QuizCommentModule } from './quiz-comment/quiz-comment.module';
 import { QuizQuestionModule } from './quiz-question/quiz-question.module';
 import { QuizOptionModule } from './quiz-option/quiz-option.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { QuizOptionModule } from './quiz-option/quiz-option.module';
     QuizCommentModule,
     QuizQuestionModule,
     QuizOptionModule,
+    CommonModule,
   ],
   controllers: [],
   providers: [],

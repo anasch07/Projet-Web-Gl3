@@ -15,7 +15,7 @@ export class CourseService {
   async save(createCourseDto: CreateCourseDto): Promise<Course> {
     return this.courseRepo.save(this.courseRepo.create({
       ...createCourseDto,
-      dateCreated: new Date(),
+      createdAt: new Date(),
     }));
   }
 

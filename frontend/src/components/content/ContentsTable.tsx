@@ -69,12 +69,12 @@ export default function ContentsTable({
         <Table columns={['Name', 'Description', 'Created']}>
           {isLoading
             ? null
-            : data.map(({ id, name, description, dateCreated }) => (
+            : data.map(({ id, name, description, createdAt }) => (
                 <tr key={id}>
                   <TableItem>{name}</TableItem>
                   <TableItem>{description}</TableItem>
                   <TableItem>
-                    {new Date(dateCreated).toLocaleDateString()}
+                    {new Date(createdAt).toLocaleDateString()}
                   </TableItem>
                   <TableItem className="text-right">
                     {['admin', 'editor'].includes(authenticatedUser.role) ? (

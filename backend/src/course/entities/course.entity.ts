@@ -1,26 +1,19 @@
 import {
-  BaseEntity,
   Column,
   Entity,
   OneToMany,
-  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { Content } from '../../content/entities/content.entity';
+import { BaseEntity } from 'src/common/base-entity';
 
 @Entity()
-export class Course {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Course extends BaseEntity {
   @Column()
   name: string;
 
   @Column()
   description: string;
-
-  @Column()
-  dateCreated: Date;
 
   @OneToMany(() => Content, (content) => content.course)
   contents: Content[];

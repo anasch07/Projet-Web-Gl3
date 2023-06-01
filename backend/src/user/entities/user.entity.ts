@@ -1,7 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { QuizSubmission } from 'src/quiz-submission/entities/quiz-submission.entity';
 import {
-  BaseEntity,
   Column,
   Entity,
   ManyToOne,
@@ -10,12 +9,10 @@ import {
 } from 'typeorm';
 
 import { Role } from '../../enums/role.enum';
+import { BaseEntity } from 'src/common/base-entity';
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class User extends BaseEntity {
   @Column()
   firstName: string;
 

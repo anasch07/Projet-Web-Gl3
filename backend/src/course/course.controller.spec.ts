@@ -12,7 +12,7 @@ const CourseMockService = {
   save: jest.fn().mockImplementation((createCourseDto: CreateCourseDto) => {
     return {
       id: 'testid',
-      dateCreated: new Date(),
+      createdAt: new Date(),
       ...createCourseDto,
     };
   }),
@@ -22,19 +22,19 @@ const CourseMockService = {
         id: 'testid1',
         name: 'test1',
         description: 'test1',
-        dateCreated: new Date(),
+        createdAt: new Date(),
       },
       {
         id: 'testid2',
         name: 'test2',
         description: 'test2',
-        dateCreated: new Date(),
+        createdAt: new Date(),
       },
       {
         id: 'testid3',
         name: 'test3',
         description: 'test3',
-        dateCreated: new Date(),
+        createdAt: new Date(),
       },
     ];
   }),
@@ -43,7 +43,7 @@ const CourseMockService = {
       id,
       name: 'test',
       description: 'test',
-      dateCreated: new Date(),
+      createdAt: new Date(),
     };
   }),
   update: jest
@@ -63,7 +63,7 @@ const ContentMockService = {
     .mockImplementation((id: string, createContentDto: CreateContentDto) => {
       return {
         id: 'testid',
-        dateCreated: new Date(),
+        createdAt: new Date(),
         ...createContentDto,
       };
     }),
@@ -73,19 +73,19 @@ const ContentMockService = {
         id: 'testid1',
         name: 'test1',
         description: 'test1',
-        dateCreated: new Date(),
+        createdAt: new Date(),
       },
       {
         id: 'testid2',
         name: 'test2',
         description: 'test2',
-        dateCreated: new Date(),
+        createdAt: new Date(),
       },
       {
         id: 'testid3',
         name: 'test3',
         description: 'test3',
-        dateCreated: new Date(),
+        createdAt: new Date(),
       },
     ];
   }),
@@ -160,7 +160,7 @@ describe('CourseController', () => {
         id: 'testid',
         name: 'test',
         description: 'test',
-        dateCreated: date,
+        createdAt: date,
       });
     });
   });
@@ -209,7 +209,7 @@ describe('CourseController', () => {
         id: 'testid',
         name: 'test',
         description: 'test',
-        dateCreated: date,
+        createdAt: date,
       });
     });
   });

@@ -10,12 +10,10 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { BaseEntity } from 'src/common/base-entity';
 
 @Entity()
-export class QuizQuestion {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class QuizQuestion extends BaseEntity {
   @Column()
   question: string;
 

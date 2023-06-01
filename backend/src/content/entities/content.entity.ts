@@ -1,5 +1,4 @@
 import {
-  BaseEntity,
   Column,
   Entity,
   JoinColumn,
@@ -8,20 +7,15 @@ import {
 } from 'typeorm';
 
 import { Course } from '../../course/entities/course.entity';
+import { BaseEntity } from 'src/common/base-entity';
 
 @Entity()
-export class Content {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Content extends BaseEntity {
   @Column()
   name: string;
 
   @Column()
   description: string;
-
-  @Column()
-  dateCreated: Date;
 
   @Column({ select: false, nullable: false })
   courseId: string;

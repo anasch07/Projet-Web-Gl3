@@ -61,14 +61,14 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
         <Table columns={['Name', 'Description', 'Created']}>
           {isLoading
             ? null
-            : data.map(({ id, name, description, dateCreated }) => (
+            : data.map(({ id, name, description, createdAt }) => (
                 <tr key={id}>
                   <TableItem>
                     <Link to={`/courses/${id}`}>{name}</Link>
                   </TableItem>
                   <TableItem>{description}</TableItem>
                   <TableItem>
-                    {new Date(dateCreated).toLocaleDateString()}
+                    {new Date(createdAt).toLocaleDateString()}
                   </TableItem>
                   <TableItem className="text-right">
                     {['admin', 'editor'].includes(authenticatedUser.role) ? (
