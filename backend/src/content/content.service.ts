@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Course } from 'src/course/entities/course.entity';
 import { ILike, Repository } from 'typeorm';
@@ -62,7 +67,9 @@ export class ContentService {
   async findByCourseIdAndId(courseId: string, id: string): Promise<Content> {
     const content = await this.contentRepo.findOne({ where: { courseId, id } });
     if (!content) {
-      throw new NotFoundException(`Could not find content with matching id ${id}`)
+      throw new NotFoundException(
+        `Could not find content with matching id ${id}`,
+      );
     }
     return content;
   }

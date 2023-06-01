@@ -51,8 +51,14 @@ export class QuizService {
   }
 
   findAll() {
+    //find all quiz with questions and options and chapters and their courses
     return this.quizRepo.find({
-      relations: ['questions', 'chaptre'],
+      relations: [
+        'questions',
+        'chaptre',
+        'questions.options',
+        'chaptre.course',
+      ],
     });
   }
 

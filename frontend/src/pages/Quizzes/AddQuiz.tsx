@@ -81,8 +81,9 @@ export default function AddQuiz() {
       questions: questions,
       title: title,
       description: description,
-      scheduleDate: scheduleDate,
-      deadlineDate: deadlineDate,
+      // deadlineDate must be a valid ISO 8601 date string
+      scheduleDate: scheduleDate.toISOString(),
+      deadlineDate: deadlineDate.toISOString(),
     });
     // @ts-ignore
     if (response) {

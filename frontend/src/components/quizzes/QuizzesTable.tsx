@@ -51,38 +51,43 @@ export default function QuizzesTable({ data, isLoading }: any) {
     }
   };
 
+  console.log("data", data)
+
   return (
     <>
       {/*center */}
       <div className="table-container">
         <Table
-          columns={['Chapter', 'Course','Description',  'NumberOfQuestions', 'Action']}
+          columns={['Course', 'Chapter','Title','Description',  'NumberOfQuestions', 'Action']}
         >
           {isLoading
             ? null
             : data.map((item,index) => (
                 <tr key={index}>
                   <TableItem>
-                    <Link to={`/courses/${item.chaptre.id}`}>{item.chaptre.name}</Link>
+                    <Link to={`/courses/${item.chaptre.course.id}`}>{item.chaptre.course.name}</Link>
                   </TableItem>
-                  <TableItem>{item.description}</TableItem>
+                  <TableItem>{item.chaptre.name}</TableItem>
+                  <TableItem>
+                    {item.title}
+                  </TableItem>
                   <TableItem>
                     {item.description}
                   </TableItem>
                   <TableItem>
                     {item.questions.length}
                   </TableItem>
-                  <TableItem className="text-right">
+                  <TableItem className="">
                     {['admin', 'editor'].includes(authenticatedUser.role) ? (
                       <button
-                        className="text-indigo-600 hover:text-indigo-900 focus:outline-none"
+                        className="text-indigo-600 hover:text-indigo-900 focus:outline-none mr-4"
                       >
                         Edit
                       </button>
                     ) : null}
                     {authenticatedUser.role === 'admin' ? (
                       <button
-                        className="text-red-600 hover:text-red-900 ml-3 focus:outline-none"
+                        className="text-red-600 hover:text-red-900  focus:outline-none"
 
                       >
                         Delete

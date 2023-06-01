@@ -1,4 +1,10 @@
-import { IsDate, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import {
+  IsDate,
+  IsDateString,
+  IsNotEmpty,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 import { CreateQuizQuestionDto } from 'src/quiz-question/dto/create-quiz-question.dto';
 
 export class CreateQuizDto {
@@ -11,11 +17,11 @@ export class CreateQuizDto {
   description: string;
 
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   scheduleDate: Date;
 
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   deadlineDate: Date;
 
   @IsNotEmpty()
