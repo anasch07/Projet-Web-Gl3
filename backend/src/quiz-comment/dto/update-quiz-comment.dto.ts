@@ -1,7 +1,8 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateQuizCommentDto } from './create-quiz-comment.dto';
+import { IsNotEmpty, IsString } from 'class-validator';
 
-export class UpdateQuizCommentDto extends PartialType(CreateQuizCommentDto) {
+export class UpdateQuizCommentDto{
   // only allow to update comment
+  @IsString()
+  @IsNotEmpty()
   comment: string;
 }

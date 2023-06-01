@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsUUID } from 'class-validator';
 
 
 export class CreateQuizCommentDto {
@@ -6,11 +6,11 @@ export class CreateQuizCommentDto {
   @IsNotEmpty()
   comment: string;
 
-  @IsNumber()
+  @IsUUID()
   @IsNotEmpty()
   quizId: string;
 
-  @IsNumber()
+  @IsUUID()
   @IsNotEmpty()
   userId: string;  
 }
