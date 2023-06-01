@@ -97,8 +97,7 @@ export class UserService {
 
   /* Hash the refresh token and save it to the database */
   async setRefreshToken(id: string, refreshToken: string): Promise<void> {
-    const user = await this.findById(id);
-    await this.userRepo.update(user, {
+    await this.userRepo.update(id, {
       refreshToken: refreshToken ? await bcrypt.hash(refreshToken, 10) : null,
     });
   }
