@@ -34,9 +34,10 @@ export class QuizSubmissionService {
     const entries = Object.entries(fr)
     for(let idx=0; idx<entries.length; idx++) {
       const [questionId, optionId] = entries[idx]
-      const userAnswer = new UserAnswers();
       const quest = await this.quizQuestionService.findOne(questionId)
       const option = await this.quizOptionService.findOne(optionId)
+
+      const userAnswer = new UserAnswers();
       userAnswer.submission=submission
       userAnswer.question=quest
       userAnswer.answer=option

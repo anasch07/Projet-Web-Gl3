@@ -13,8 +13,6 @@ export class QuizSubmissionController {
     return this.quizSubmissionService.create(createQuizSubmissionDto);
   }
   
-
-
   @Get()
   findAll() {
     return this.quizSubmissionService.findAll();

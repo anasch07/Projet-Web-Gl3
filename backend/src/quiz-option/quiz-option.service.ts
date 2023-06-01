@@ -1,11 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 
 import { CreateQuizOptionDto } from './dto/create-quiz-option.dto';
 import { UpdateQuizOptionDto } from './dto/update-quiz-option.dto';
 import { QuizOption } from './entities/quiz-option.entity';
-import { QuizQuestion } from 'src/quiz-question/entities/quiz-question.entity';
 
 @Injectable()
 export class QuizOptionService {
@@ -25,7 +24,11 @@ export class QuizOptionService {
   }
 
   findOne(id: string) {
-    return this.quizOptionRepository.findOne(id);
+    const opt = this.quizOptionRepository.findOne(id);
+    if(!opt){
+      throw new NotFoundException("question not found")
+    }
+    return opt;
   }
 
   update(id: string, updateQuizOptionDto: UpdateQuizOptionDto) {

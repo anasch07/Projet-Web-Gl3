@@ -1,4 +1,4 @@
-export class CourseQuery {
+export class ContentSearchDto {
   name?: string;
   description?: string;
 }

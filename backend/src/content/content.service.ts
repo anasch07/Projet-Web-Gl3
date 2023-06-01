@@ -1,10 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Course } from 'src/course/entities/course.entity';
 import { ILike, Repository } from 'typeorm';
 
 import { CourseService } from '../course/course.service';
-import { ContentQuery } from './content.query';
+import { ContentSearchDto } from './dto/content-search.dto';
 import { CreateContentDto } from './dto/create-content.dto';
 import { UpdateContentDto } from './dto/update-content.dto';
 import { Content } from './entities/content.entity';
@@ -33,7 +33,7 @@ export class ContentService {
     );
   }
 
-  async findAll(contentQuery: ContentQuery): Promise<Content[]> {
+  async findAll(contentQuery: ContentSearchDto): Promise<Content[]> {
     Object.keys(contentQuery).forEach((key) => {
       contentQuery[key] = ILike(`%${contentQuery[key]}%`);
     });
@@ -63,10 +63,7 @@ export class ContentService {
   async findByCourseIdAndId(courseId: string, id: string): Promise<Content> {
     const content = await this.contentRepo.findOne({ where: { courseId, id } });
     if (!content) {
-      throw new HttpException(
-        `Could not find content with matching id ${id}`,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new NotFoundException(`Could not find content with matching id ${id}`)
     }
     return content;
   }
@@ -83,7 +80,7 @@ export class ContentService {
 
   async findAllByCourseId(
     courseId: string,
-    contentQuery: ContentQuery,
+    contentQuery: ContentSearchDto,
   ): Promise<Content[]> {
     Object.keys(contentQuery).forEach((key) => {
       contentQuery[key] = ILike(`%${contentQuery[key]}%`);

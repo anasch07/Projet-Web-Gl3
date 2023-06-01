@@ -4,8 +4,8 @@ import { ILike, Repository } from 'typeorm';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { Course } from './entities/course.entity';
-import { CourseQuery } from './course.query';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CourseSearchDto } from './dto/course-search.dto';
 
 @Injectable()
 export class CourseService {
@@ -20,7 +20,7 @@ export class CourseService {
     }));
   }
 
-  async findAll(courseQuery: CourseQuery): Promise<Course[]> {
+  async findAll(courseQuery: CourseSearchDto): Promise<Course[]> {
     Object.keys(courseQuery).forEach((key) => {
       courseQuery[key] = ILike(`%${courseQuery[key]}%`);
     });
