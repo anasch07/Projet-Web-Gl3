@@ -25,7 +25,7 @@ export class Quiz extends BaseEntity {
   @Column()
   deadlineDate: Date;
 
-  @OneToMany((type) => QuizSubmission, (sub) => sub.quiz, { eager: true })
+  @OneToMany((type) => QuizSubmission, (sub) => sub.quiz)
   submissions: QuizSubmission[];
 
   @ManyToOne((type) => Content)
