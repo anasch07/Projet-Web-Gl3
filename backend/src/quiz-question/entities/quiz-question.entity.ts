@@ -16,6 +16,9 @@ import { BaseEntity } from 'src/common/base-entity';
 export class QuizQuestion extends BaseEntity {
   @Column()
   question: string;
+  
+  @Column()
+  quizId: string;
 
   @Column()
   mark: number;
@@ -23,9 +26,6 @@ export class QuizQuestion extends BaseEntity {
   @OneToMany(() => QuizOption, (opt) => opt.question, { eager: true })
   options: QuizOption[];
 
-  @Column()
-  quizId: string;
-
-  @ManyToOne(() => Quiz, (quiz) => quiz.questions)
+  @ManyToOne((type) => Quiz,(quiz) => quiz.questions)
   quiz: Quiz;
 }

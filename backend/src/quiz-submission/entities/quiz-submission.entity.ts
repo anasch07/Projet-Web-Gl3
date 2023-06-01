@@ -10,7 +10,7 @@ import {
 
 @Entity()
 export class QuizSubmission extends BaseEntity {
-  @ManyToOne(() => Quiz, (q) => q.submissions)
+  @ManyToOne(() => Quiz, (q) => q.submissions, {onDelete:'CASCADE'})
   quiz: Quiz;
 
   @ManyToOne(() => User)
