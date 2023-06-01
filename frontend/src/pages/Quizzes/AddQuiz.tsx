@@ -69,6 +69,7 @@ export default function AddQuiz() {
     ContentService.findAllWithCourses().then((res) => {
       console.log('res: ', res);
       setData(res);
+      if (res[0])
       setChapterId(res[0].id);
     });
   }, []);
