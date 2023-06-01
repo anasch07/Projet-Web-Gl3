@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 
 import { CreateQuizDto } from './dto/create-quiz.dto';
@@ -31,7 +32,7 @@ export class QuizController {
     return this.quizService.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateQuizDto: UpdateQuizDto) {
     return this.quizService.update(id, updateQuizDto);
   }

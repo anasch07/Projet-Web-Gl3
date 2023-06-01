@@ -23,6 +23,9 @@ export class QuizQuestion extends BaseEntity {
   @OneToMany(() => QuizOption, (opt) => opt.question, { eager: true })
   options: QuizOption[];
 
-  @ManyToOne(() => Quiz)
+  @Column()
+  quizId: string;
+
+  @ManyToOne(() => Quiz, (quiz) => quiz.questions)
   quiz: Quiz;
 }

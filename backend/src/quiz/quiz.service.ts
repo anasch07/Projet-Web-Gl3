@@ -2,18 +2,20 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ContentService } from 'src/content/content.service';
 import { QuizQuestionService } from 'src/quiz-question/quiz-question.service';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { getConnection } from 'typeorm';
 
 import { CreateQuizDto } from './dto/create-quiz.dto';
 import { UpdateQuizDto } from './dto/update-quiz.dto';
 import { Quiz } from './entities/quiz.entity';
+import { QuizOptionService } from 'src/quiz-option/quiz-option.service';
 
 @Injectable()
 export class QuizService {
   constructor(
     private questionService: QuizQuestionService,
     private contentService: ContentService,
+    private quizOptionService: QuizOptionService,
     @InjectRepository(Quiz)
     private quizRepo: Repository<Quiz>,
   ) {}
@@ -56,15 +58,28 @@ export class QuizService {
     });
   }
 
-  async findOne(id: string) {
-    const quiz = await this.quizRepo.findOne(id, {
-      relations: [
-        'questions',
-        'chaptre',
-        'questions.options',
-        'questions.options.question',
-      ],
-    });
+  async findOne(id: string, entityManager?: EntityManager) {
+    let quiz;
+    if(entityManager){
+      quiz = await entityManager.findOne(Quiz, id, {
+        relations: [
+          'questions',
+          'chaptre',
+          'questions.options',
+          'questions.options.question',
+        ],
+      });
+    }
+    else{
+      quiz = await this.quizRepo.findOne(id, {
+        relations: [
+          'questions',
+          'chaptre',
+          'questions.options',
+          'questions.options.question',
+        ],
+      });
+    }
     if (!quiz) {
       throw new NotFoundException('Quiz id not found');
     }
@@ -72,10 +87,49 @@ export class QuizService {
   }
 
   async update(id: string, updateQuizDto: UpdateQuizDto): Promise<Quiz> {
-    const course = await this.findOne(id);
-    return await this.quizRepo.save(
-      this.quizRepo.create({ id: course.id, ...updateQuizDto }),
+    const {questions, ...quizInfo} = updateQuizDto
+
+    const connection = getConnection();
+    const queryRunner = connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    const quiz = await this.findOne(id, queryRunner.manager);
+
+    const retVal = await queryRunner.manager.save(
+      this.quizRepo.create({ id: quiz.id, ...quizInfo }),
     );
+    
+    for(let idx=0; idx < questions.length; idx++){
+      const { options, ...question } = questions[idx]
+      if(question.isDeleted){
+        await this.questionService.remove(question.id, queryRunner.manager)
+        continue;
+      }
+      if(!question.id){
+        // Create
+        const optToCreate = options.map(e => ({...e, option: e.display}))
+        await this.questionService.create({question: question.question, mark: 5, options: optToCreate}, quiz, queryRunner.manager)
+        continue
+      }
+      
+      await this.questionService.update(question.id, {...question}, queryRunner.manager)
+      for(const option of options){
+        if(option.isDeleted){
+          await this.quizOptionService.remove(question.id, queryRunner.manager)
+          continue;
+        }
+        if(option.id){
+          await this.quizOptionService.update(option.id, {...option}, queryRunner.manager)
+          continue
+        }
+        await this.quizOptionService.create({...option}, queryRunner.manager)
+      }
+    }
+
+    queryRunner.commitTransaction()
+    queryRunner.release()
+    return retVal
   }
 
   async delete(id: string): Promise<string> {
