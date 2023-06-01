@@ -1,3 +1,4 @@
+import { BaseEntity } from 'src/common/base-entity';
 import { Quiz } from 'src/quiz/entities/quiz.entity';
 import { QuizOption } from 'src/quiz-option/entities/quiz-option.entity';
 import {
@@ -10,7 +11,6 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { BaseEntity } from 'src/common/base-entity';
 
 @Entity()
 export class QuizQuestion extends BaseEntity {

@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ContentService } from 'src/content/content.service';
+import { QuizOptionService } from 'src/quiz-option/quiz-option.service';
 import { QuizQuestionService } from 'src/quiz-question/quiz-question.service';
 import { EntityManager, Repository } from 'typeorm';
 import { getConnection } from 'typeorm';
@@ -8,7 +9,6 @@ import { getConnection } from 'typeorm';
 import { CreateQuizDto } from './dto/create-quiz.dto';
 import { UpdateQuizDto } from './dto/update-quiz.dto';
 import { Quiz } from './entities/quiz.entity';
-import { QuizOptionService } from 'src/quiz-option/quiz-option.service';
 
 @Injectable()
 export class QuizService {
@@ -66,7 +66,7 @@ export class QuizService {
 
   async findOne(id: string, entityManager?: EntityManager) {
     let quiz;
-    if(entityManager){
+    if (entityManager) {
       quiz = await entityManager.findOne(Quiz, id, {
         relations: [
           'questions',
@@ -75,8 +75,7 @@ export class QuizService {
           'questions.options.question',
         ],
       });
-    }
-    else{
+    } else {
       quiz = await this.quizRepo.findOne(id, {
         relations: [
           'questions',
@@ -93,7 +92,7 @@ export class QuizService {
   }
 
   async update(id: string, updateQuizDto: UpdateQuizDto): Promise<Quiz> {
-    const {questions, ...quizInfo} = updateQuizDto
+    const { questions, ...quizInfo } = updateQuizDto;
 
     const connection = getConnection();
     const queryRunner = connection.createQueryRunner();
@@ -105,37 +104,49 @@ export class QuizService {
     const retVal = await queryRunner.manager.save(
       this.quizRepo.create({ id: quiz.id, ...quizInfo }),
     );
-    
-    for(let idx=0; idx < questions.length; idx++){
-      const { options, ...question } = questions[idx]
-      if(question.isDeleted){
-        await this.questionService.remove(question.id, queryRunner.manager)
+
+    for (let idx = 0; idx < questions.length; idx++) {
+      const { options, ...question } = questions[idx];
+      if (question.isDeleted) {
+        await this.questionService.remove(question.id, queryRunner.manager);
         continue;
       }
-      if(!question.id){
+      if (!question.id) {
         // Create
-        const optToCreate = options.map(e => ({...e, option: e.display}))
-        await this.questionService.create({question: question.question, mark: 5, options: optToCreate}, quiz, queryRunner.manager)
-        continue
+        const optToCreate = options.map((e) => ({ ...e, option: e.display }));
+        await this.questionService.create(
+          { question: question.question, mark: 5, options: optToCreate },
+          quiz,
+          queryRunner.manager,
+        );
+        continue;
       }
-      
-      await this.questionService.update(question.id, {...question}, queryRunner.manager)
-      for(const option of options){
-        if(option.isDeleted){
-          await this.quizOptionService.remove(question.id, queryRunner.manager)
+
+      await this.questionService.update(
+        question.id,
+        { ...question },
+        queryRunner.manager,
+      );
+      for (const option of options) {
+        if (option.isDeleted) {
+          await this.quizOptionService.remove(question.id, queryRunner.manager);
           continue;
         }
-        if(option.id){
-          await this.quizOptionService.update(option.id, {...option}, queryRunner.manager)
-          continue
+        if (option.id) {
+          await this.quizOptionService.update(
+            option.id,
+            { ...option },
+            queryRunner.manager,
+          );
+          continue;
         }
-        await this.quizOptionService.create({...option}, queryRunner.manager)
+        await this.quizOptionService.create({ ...option }, queryRunner.manager);
       }
     }
 
-    queryRunner.commitTransaction()
-    queryRunner.release()
-    return retVal
+    queryRunner.commitTransaction();
+    queryRunner.release();
+    return retVal;
   }
 
   async delete(id: string): Promise<string> {

@@ -25,10 +25,9 @@ export default function QuizzesTeacher() {
     () =>
       QuizService.findAll(),
     {
-      refetchInterval: 100000,
+      refetchInterval: 2000,
     },
   );
-    console.log("data", data);
 
   return (
     <Layout>

@@ -8,12 +8,12 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
+import { Role } from 'src/enums/role.enum';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
 
 import { UserService } from '../user/user.service';
 import { LoginDto } from './dto/login.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
-import { Role } from 'src/enums/role.enum';
 
 @Injectable()
 export class AuthService {
@@ -72,8 +72,8 @@ export class AuthService {
   }
 
   async register(registerDto: CreateUserDto) {
-    const {role, ...data} = registerDto
-    return await this.userService.save({...data, role: Role.Student})
+    const { role, ...data } = registerDto;
+    return await this.userService.save({ ...data, role: Role.Student });
   }
 
   async refresh(

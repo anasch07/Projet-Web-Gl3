@@ -10,6 +10,7 @@ import courseService from '../../services/CourseService';
 import Modal from '../shared/Modal';
 import Table from '../shared/Table';
 import TableItem from '../shared/TableItem';
+import quizService from "../../services/QuizService";
 
 
 export default function QuizzesTable({ data, isLoading }: any) {
@@ -30,13 +31,12 @@ export default function QuizzesTable({ data, isLoading }: any) {
 
   const handleDelete = async () => {
     try {
-      setIsDeleting(true);
-      await courseService.delete(selectedCourseId);
-      setDeleteShow(false);
+      const res = await quizService.delete(selectedCourseId);
+        if(res){
+            setDeleteShow(false);
+        }
     } catch (error) {
-      setError(error.response.data.message);
-    } finally {
-      setIsDeleting(false);
+        setError(error.response.data.message);
     }
   };
 
@@ -81,6 +81,11 @@ export default function QuizzesTable({ data, isLoading }: any) {
                     {['admin', 'editor'].includes(authenticatedUser.role) ? (
                       <button
                         className="text-indigo-600 hover:text-indigo-900 focus:outline-none mr-4"
+                        onClick={() => {
+                          //redirect to edit quiz page
+                          window.location.href = `/edit-quiz/${item.id}`;
+                        }
+                        }
                       >
                         Edit
                       </button>
@@ -88,7 +93,12 @@ export default function QuizzesTable({ data, isLoading }: any) {
                     {authenticatedUser.role === 'admin' ? (
                       <button
                         className="text-red-600 hover:text-red-900  focus:outline-none"
-
+                        onClick={
+                            () => {
+                                setSelectedCourseId(item.id);
+                                setDeleteShow(true);
+                            }
+                            }
                       >
                         Delete
                       </button>
@@ -107,10 +117,10 @@ export default function QuizzesTable({ data, isLoading }: any) {
       <Modal show={deleteShow}>
         <AlertTriangle size={30} className="text-red-500 mr-5 fixed" />
         <div className="ml-10">
-          <h3 className="mb-2 font-semibold">Delete Course</h3>
+          <h3 className="mb-2 font-semibold">Delete Quizz</h3>
           <hr />
           <p className="mt-2">
-            Are you sure you want to delete the course? All of course's data
+            Are you sure you want to delete the Quizz? All of Quizz's data
             will be permanently removed.
             <br />
             This action cannot be undone.
@@ -146,55 +156,7 @@ export default function QuizzesTable({ data, isLoading }: any) {
         ) : null}
       </Modal>
       {/* Update Course Modal */}
-      <Modal show={updateShow}>
-        <div className="flex">
-          <h1 className="font-semibold mb-3">Update Course</h1>
-          <button
-            className="ml-auto focus:outline-none"
-            onClick={() => {
-              setUpdateShow(false);
-              setError(null);
-              reset();
-            }}
-          >
-            <X size={30} />
-          </button>
-        </div>
-        <hr />
 
-        <form
-          className="flex flex-col gap-5 mt-5"
-          onSubmit={handleSubmit(handleUpdate)}
-        >
-          <input
-            type="text"
-            className="input"
-            placeholder="Name"
-            required
-            {...register('name')}
-          />
-          <input
-            type="text"
-            className="input"
-            placeholder="Description"
-            required
-            disabled={isSubmitting}
-            {...register('description')}
-          />
-          <button className="btn" disabled={isSubmitting}>
-            {isSubmitting ? (
-              <Loader className="animate-spin mx-auto" />
-            ) : (
-              'Save'
-            )}
-          </button>
-          {error ? (
-            <div className="text-red-500 p-3 font-semibold border rounded-md bg-red-50">
-              {error}
-            </div>
-          ) : null}
-        </form>
-      </Modal>
     </>
   );
 }

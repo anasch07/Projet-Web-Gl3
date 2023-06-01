@@ -11,6 +11,8 @@ import QuizzesTeacher from './pages/Quizzes/QuizzesTeacher';
 import Users from './pages/Users';
 import { AuthRoute, PrivateRoute } from './Route';
 import authService from './services/AuthService';
+import EditQuiz from "./pages/Quizzes/EditQuiz";
+import Signup from "./pages/Signup";
 
 export default function App() {
   const { authenticatedUser, setAuthenticatedUser } = useAuth();
@@ -54,8 +56,15 @@ export default function App() {
           component={AddQuiz}
           roles={['admin']}
         />
+        <PrivateRoute
+            exact
+            path="/edit-quiz/:id"
+            component={EditQuiz}
+            roles={['admin']}
+            />
 
         <AuthRoute exact path="/login" component={Login} />
+        <AuthRoute exact path="/signup" component={Signup} />
       </Switch>
     </Router>
   ) : null;
