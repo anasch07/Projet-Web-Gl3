@@ -88,6 +88,7 @@ type QuizOption {
 }
 
 type Query {
+  allUsers: [User!]!
   userById(id: String!): User!
   userByUsername(username: String!): User!
   quizSubmissionById(id: String!): QuizSubmission!

@@ -12,6 +12,11 @@ export class UserResolver {
     private submissionService: QuizSubmissionService
   ) {}
 
+  @Query((returns) => [User])
+  async allUsers() {
+    return this.userService.findAll({})
+  }
+
   @Query((returns) => User)
   async userById(@Args('id', { type: () => String }) id: string) {
     return this.userService.findById(id)
