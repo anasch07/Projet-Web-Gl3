@@ -90,4 +90,10 @@ type QuizOption {
 type Query {
   userById(id: String!): User!
   userByUsername(username: String!): User!
+  quizSubmissionById(id: String!): QuizSubmission!
+  quizById(id: String!): Quiz!
+  allQuizzes: [Quiz!]!
+  quizQuestionById(id: String!): QuizQuestion!
+  quizQuestionByQuizId(id: String!): [QuizQuestion!]!
+  quizOptionById(id: String!): QuizOption!
 }

@@ -9,10 +9,11 @@ import { QuizQuestionService } from 'src/quiz-question/quiz-question.service';
 import { QuizOptionService } from 'src/quiz-option/quiz-option.service';
 import { QuizOptionModule } from 'src/quiz-option/quiz-option.module';
 import { QuizQuestionModule } from 'src/quiz-question/quiz-question.module';
+import { QuizSubmissionResolver } from './quiz-submission.resolver';
 
 @Module({
   controllers: [QuizSubmissionController],
-  providers: [QuizSubmissionService],
+  providers: [QuizSubmissionService, QuizSubmissionResolver],
   imports: [
     TypeOrmModule.forFeature(
       [QuizSubmission, UserAnswers]

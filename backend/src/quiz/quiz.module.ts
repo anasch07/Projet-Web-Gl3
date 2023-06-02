@@ -7,10 +7,11 @@ import { QuizQuestionModule } from 'src/quiz-question/quiz-question.module';
 import { Quiz } from './entities/quiz.entity';
 import { QuizController } from './quiz.controller';
 import { QuizService } from './quiz.service';
+import { QuizResolver } from './quiz.resolver';
 
 @Module({
   controllers: [QuizController],
-  providers: [QuizService],
+  providers: [QuizService, QuizResolver],
   imports: [
     TypeOrmModule.forFeature([Quiz]),
     QuizQuestionModule,
