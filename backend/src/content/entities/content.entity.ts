@@ -24,6 +24,7 @@ export class Content extends BaseEntity {
   @Field()
   courseId: string;
 
+  @Field()
   @ManyToOne(() => Course, (course) => course.contents, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'courseId' })
   course: Course;
