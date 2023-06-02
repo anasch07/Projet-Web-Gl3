@@ -78,7 +78,7 @@ export default function QuizzesTable({ data, isLoading }: any) {
                     {item.questions.length}
                   </TableItem>
                   <TableItem className="">
-                    {['admin', 'editor'].includes(authenticatedUser.role) ? (
+                    {['admin', 'teacher'].includes(authenticatedUser.role) ? (
                       <button
                         className="text-indigo-600 hover:text-indigo-900 focus:outline-none mr-4"
                         onClick={() => {

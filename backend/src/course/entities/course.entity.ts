@@ -18,7 +18,6 @@ export class Course extends BaseEntity {
   @Field()
   description: string;
 
-  @Field()
   @OneToMany(() => Content, (content) => content.course)
   contents: Content[];
 }

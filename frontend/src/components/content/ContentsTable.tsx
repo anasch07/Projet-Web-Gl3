@@ -77,7 +77,7 @@ export default function ContentsTable({
                     {new Date(createdAt).toLocaleDateString()}
                   </TableItem>
                   <TableItem className="text-right">
-                    {['admin', 'editor'].includes(authenticatedUser.role) ? (
+                    {['admin', 'teacher'].includes(authenticatedUser.role) ? (
                       <button
                         className="text-indigo-600 hover:text-indigo-900 focus:outline-none"
                         onClick={() => {

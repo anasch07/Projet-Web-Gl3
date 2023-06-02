@@ -100,8 +100,8 @@ export default function Users() {
             onChange={(e) => setRole(e.target.value)}
           >
             <option value="">All</option>
-            <option value="user">User</option>
-            <option value="editor">Editor</option>
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
             <option value="admin">Admin</option>
           </select>
         </div>
@@ -170,8 +170,8 @@ export default function Users() {
             {...register('role')}
             disabled={isSubmitting}
           >
-            <option value="user">User</option>
-            <option value="editor">Editor</option>
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
             <option value="admin">Admin</option>
           </select>
           <button className="btn" disabled={isSubmitting}>
