@@ -20,6 +20,9 @@ import { QuizQuestionModule } from 'src/quiz-question/quiz-question.module';
     QuizModule,
     QuizQuestionModule,
     QuizOptionModule
+  ],
+  exports: [
+    QuizSubmissionService
   ]
 })
 export class QuizSubmissionModule {}

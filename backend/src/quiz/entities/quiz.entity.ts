@@ -5,7 +5,7 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn,
+  JoinColumn,
 } from 'typeorm';
 
 import { QuizQuestion } from '../../quiz-question/entities/quiz-question.entity';
@@ -28,7 +28,11 @@ export class Quiz extends BaseEntity {
   @OneToMany((type) => QuizSubmission, (sub) => sub.quiz)
   submissions: QuizSubmission[];
 
+  @Column()
+  chaptreId:string
+
   @ManyToOne((type) => Content)
+  @JoinColumn({name: "chaptreId"})
   chaptre: Content;
 
   @OneToMany((type) => QuizQuestion, (question) => question.quiz, {

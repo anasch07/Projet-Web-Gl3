@@ -51,6 +51,10 @@ export class QuizSubmissionService {
     return submission;
   }
 
+  findUserSubmissions(userId: string) {
+    return this.submissionRepo.find({where: {studentId: userId}})
+  }
+
   findAll() {
     return `This action returns all quizSubmission`;
   }

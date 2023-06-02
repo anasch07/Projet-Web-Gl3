@@ -9,6 +9,7 @@ import {
 import { Role } from '../../enums/role.enum';
 import { BaseEntity } from 'src/common/base-entity';
 import { Field, ObjectType } from '@nestjs/graphql';
+import { QuizComment } from 'src/quiz-comment/entities/quiz-comment.entity';
 
 @Entity()
 @ObjectType({description: 'user'})
@@ -27,6 +28,9 @@ export class User extends BaseEntity {
 
   @OneToMany(() => QuizSubmission, (sub) => sub.student)
   submissions: QuizSubmission[];
+
+  @OneToMany(() => QuizComment, (sub) => sub.user)
+  comments: QuizComment[]
 
   @Field()
   @Column({ type: 'enum', enum: Role, default: Role.Student })

@@ -27,5 +27,6 @@ export class QuizQuestion extends BaseEntity {
   options: QuizOption[];
 
   @ManyToOne((type) => Quiz,(quiz) => quiz.questions)
+  @JoinColumn({name: "quizId"})
   quiz: Quiz;
 }
