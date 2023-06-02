@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsString, IsUUID } from '@nestjs/class-validator';
 
 export class CreateQuizOptionDto {
   @IsNotEmpty()

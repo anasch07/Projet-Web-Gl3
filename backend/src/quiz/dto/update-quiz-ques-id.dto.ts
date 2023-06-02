@@ -1,8 +1,8 @@
 import { PartialType } from "@nestjs/swagger";
-import { IsBoolean, IsNotEmpty, IsUUID, ValidateNested, IsOptional } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsUUID, ValidateNested, IsOptional } from "@nestjs/class-validator";
 import { UpdateQuizQuestionDto } from "src/quiz-question/dto/update-quiz-question.dto";
 import { OptionWithBooleanWithId } from "./update-option-id.dto";
-import { Type } from "class-transformer";
+import { Type } from "@nestjs/class-transformer";
 
 export class UpdateQuizQuestionDtoWithId extends UpdateQuizQuestionDto {
   @IsUUID()

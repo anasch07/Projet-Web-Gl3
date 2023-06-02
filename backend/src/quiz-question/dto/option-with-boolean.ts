@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsBoolean } from "class-validator"
+import { IsString, IsNotEmpty, IsBoolean } from "@nestjs/class-validator"
 
 export class OptionWithBoolean {
   @IsString()

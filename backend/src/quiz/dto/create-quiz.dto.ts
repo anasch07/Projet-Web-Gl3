@@ -4,7 +4,7 @@ import {
   IsNotEmpty,
   IsString,
   IsUUID,
-} from 'class-validator';
+} from '@nestjs/class-validator';
 import { CreateQuizQuestionDto } from 'src/quiz-question/dto/create-quiz-question.dto';
 
 export class CreateQuizDto {

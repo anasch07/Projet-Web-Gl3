@@ -33,7 +33,7 @@ export class CourseService {
   }
 
   async findById(id: string): Promise<Course> {
-    const course = await this.courseRepo.findOne(id);
+    const course = await this.courseRepo.findOne({where: {id}});
     if (!course) {
       throw new NotFoundException(`Could not find course with matching id ${id}`)
     }

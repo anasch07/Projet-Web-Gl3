@@ -24,7 +24,7 @@ export class QuizOptionService {
   }
 
   findOne(id: string) {
-    const opt = this.quizOptionRepository.findOne(id);
+    const opt = this.quizOptionRepository.findOne({where: {id}});
     if(!opt){
       throw new NotFoundException("question not found")
     }

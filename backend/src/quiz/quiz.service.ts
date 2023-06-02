@@ -67,7 +67,8 @@ export class QuizService {
   async findOne(id: string, entityManager?: EntityManager) {
     let quiz;
     if (entityManager) {
-      quiz = await entityManager.findOne(Quiz, id, {
+      quiz = await entityManager.findOne(Quiz, {
+        where: {id},
         relations: [
           'questions',
           'chaptre',
@@ -76,7 +77,8 @@ export class QuizService {
         ],
       });
     } else {
-      quiz = await this.quizRepo.findOne(id, {
+      quiz = await this.quizRepo.findOne({
+        where: {id},
         relations: [
           'questions',
           'chaptre',
@@ -129,7 +131,7 @@ export class QuizService {
       );
       for (const option of options) {
         if (option.isDeleted) {
-          await this.quizOptionService.remove(question.id, queryRunner.manager);
+          await this.quizOptionService.remove(option.id, queryRunner.manager);
           continue;
         }
         if (option.id) {
@@ -140,7 +142,7 @@ export class QuizService {
           );
           continue;
         }
-        await this.quizOptionService.create({ ...option }, queryRunner.manager);
+        await this.quizOptionService.create({ ...option, questionId: question.id, }, queryRunner.manager);
       }
     }
 
@@ -151,12 +153,11 @@ export class QuizService {
 
   async delete(id: string): Promise<string> {
     const quiz = await this.findOne(id);
-    const quiz1=await this.quizRepo.findOne(id)
+    const quiz1=await this.quizRepo.findOne({where: {id}})
   const list =quiz1.questions
   for(let idx=0; idx<list.length; idx++){
     await this.questionService.remove(list[idx].id)
   }
-    //console.log(quiz)
     await this.quizRepo.remove(quiz1);
     return id;
   }

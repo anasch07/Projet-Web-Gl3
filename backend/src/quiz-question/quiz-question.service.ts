@@ -72,7 +72,7 @@ export class QuizQuestionService {
   }
 
   async findOne(id:string){
-    const question = await this.quizQuestionRepository.findOne(id);
+    const question = await this.quizQuestionRepository.findOne({where: {id}});
     if (!question) {
       throw new NotFoundException("question not found")
     }

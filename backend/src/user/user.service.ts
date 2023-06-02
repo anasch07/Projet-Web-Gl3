@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { ILike, Repository } from 'typeorm';
 
@@ -7,6 +7,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UserQuery } from './user.query';
 import { InjectRepository } from '@nestjs/typeorm';
+import {  } from '@nestjs/typeorm'
 
 @Injectable()
 export class UserService {
@@ -27,14 +28,15 @@ export class UserService {
   }
 
   async findAll(userQuery: UserQuery): Promise<User[]> {
+    const where = {}
     Object.keys(userQuery).forEach((key) => {
       if (key !== 'role') {
-        userQuery[key] = ILike(`%${userQuery[key]}%`);
+        where[key] = ILike(`%${userQuery[key]}%`);
       }
     });
 
     return this.userRepo.find({
-      where: userQuery,
+      where,
       order: {
         firstName: 'ASC',
         lastName: 'ASC',
@@ -43,13 +45,9 @@ export class UserService {
   }
 
   async findById(id: string): Promise<User> {
-    const user = await this.userRepo.findOne(id);
-
+    const user = await this.userRepo.findOne({where: {id: id}})
     if (!user) {
-      throw new HttpException(
-        `Could not find user with matching id ${id}`,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new NotFoundException(`Could not find user with matching id ${id}`)
     }
 
     return user;
@@ -61,7 +59,7 @@ export class UserService {
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const currentUser = await this.findById(id);
-
+    
     /* If username is same as before, delete it from the dto */
     if (currentUser.username === updateUserDto.username) {
       delete updateUserDto.username;
@@ -73,10 +71,7 @@ export class UserService {
 
     if (updateUserDto.username) {
       if (await this.findByUsername(updateUserDto.username)) {
-        throw new HttpException(
-          `User with username ${updateUserDto.username} is already exists`,
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException(`User with username ${updateUserDto.username} is already exists`)
       }
     }
 

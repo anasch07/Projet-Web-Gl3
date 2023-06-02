@@ -23,7 +23,7 @@ export class QuizCommentService {
   }
 
   findOne(id: string) {
-    return this.quizCommentRepository.findOne(id);
+    return this.quizCommentRepository.findOne({where: {id}});
   }
 
   update(id: string, updateQuizCommentDto: UpdateQuizCommentDto) {

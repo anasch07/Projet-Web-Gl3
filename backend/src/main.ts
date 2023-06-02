@@ -1,12 +1,10 @@
-import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as bcrypt from 'bcrypt';
-import * as cookieParser from 'cookie-parser';
-
 import { AppModule } from './app.module';
 import { Role } from './enums/role.enum';
 import { UserService } from './user/user.service';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function createAdminOnFirstUse(app: INestApplication) {
   const userService = app.get(UserService);

@@ -52,7 +52,7 @@ export class ContentService {
   }
 
   async findById(id: string): Promise<Content> {
-    const content = await this.contentRepo.findOne(id);
+    const content = await this.contentRepo.findOne({where: {id}});
 
     if (!content) {
       throw new HttpException(

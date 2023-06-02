@@ -1,14 +1,12 @@
 import {
   IsAlphanumeric,
-  IsBoolean,
   IsEnum,
   IsNotEmpty,
-  IsOptional,
   IsString,
   MinLength,
-} from 'class-validator';
+} from '@nestjs/class-validator';
+import { Role } from 'src/enums/role.enum';
 
-import { Role } from '../../enums/role.enum';
 
 export class CreateUserDto {
   @IsNotEmpty()

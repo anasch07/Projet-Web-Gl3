@@ -1,7 +1,6 @@
 import {
+  BadRequestException,
   ForbiddenException,
-  HttpException,
-  HttpStatus,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -33,14 +32,11 @@ export class AuthService {
     const user = await this.userService.findByUsername(username);
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      throw new HttpException(
-        'Invalid username or password',
-        HttpStatus.UNAUTHORIZED,
-      );
+      throw new UnauthorizedException('Invalid username or password')
     }
 
     if (!user.isActive) {
-      throw new HttpException('Account is disabled', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException('Account is disabled')
     }
 
     const { id, firstName, lastName, role } = user;
@@ -63,8 +59,8 @@ export class AuthService {
     return { token: accessToken, user };
   }
 
-  /* Because JWT is a stateless authentication, this function removes the refresh token from the cookies and the database */
   async logout(request: Request, response: Response): Promise<boolean> {
+    // @ts-ignore
     const userId = request.user['userId'];
     await this.userService.setRefreshToken(userId, null);
     response.clearCookie('refresh-token');
@@ -81,7 +77,7 @@ export class AuthService {
     response: Response,
   ): Promise<LoginResponseDto> {
     if (!refreshToken) {
-      throw new HttpException('Refresh token required', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException('Refresh token required')
     }
 
     const decoded = this.jwtService.decode(refreshToken);
@@ -90,10 +86,7 @@ export class AuthService {
 
     if (!(await bcrypt.compare(refreshToken, user.refreshToken))) {
       response.clearCookie('refresh-token');
-      throw new HttpException(
-        'Refresh token is not valid',
-        HttpStatus.FORBIDDEN,
-      );
+      throw new ForbiddenException('Refresh token is not valid')
     }
 
     try {
@@ -109,10 +102,7 @@ export class AuthService {
     } catch (error) {
       response.clearCookie('refresh-token');
       await this.userService.setRefreshToken(id, null);
-      throw new HttpException(
-        'Refresh token is not valid',
-        HttpStatus.FORBIDDEN,
-      );
+      throw new ForbiddenException('Refresh token is not valid')
     }
   }
 }

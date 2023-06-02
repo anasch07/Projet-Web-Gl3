@@ -1,7 +1,7 @@
-import { IsNotEmpty, IsNumber, IsString, ValidateNested } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, ValidateNested } from '@nestjs/class-validator';
 
 import { OptionWithBoolean } from './option-with-boolean';
-import { Type } from 'class-transformer';
+import { Type } from '@nestjs/class-transformer';
 
 export class CreateQuizQuestionDto {
   @IsString()
