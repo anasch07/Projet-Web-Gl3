@@ -16,7 +16,7 @@ class QuizService {
   }
 
 
-  async update(id: string, data: any): Promise<void> {
+  async update(id: string, data: any): Promise<any> {
     return await apiService.put(`/api/quiz/${id}`, data);
   }
 

@@ -32,7 +32,7 @@ export default function Sidebar({ className }: SidebarProps) {
   return (
     <div className={'sidebar ' + className}>
       <Link to="/" className="no-underline text-black">
-        <h1 className="font-semibold text-center">GL3-YFZ Project</h1>
+        <h1 className="font-semibold text-center">Quizzy</h1>
       </Link>
       <nav className="mt-5 flex flex-col gap-3 flex-grow">
         <SidebarItem to="/">
