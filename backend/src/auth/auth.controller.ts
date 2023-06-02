@@ -10,12 +10,12 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
 
+import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
-import { AuthService } from './auth.service';
 import { JwtGuard } from './guards/jwt.guard';
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
 
 @Controller('auth')
 @ApiTags('Authentication')
@@ -33,9 +33,7 @@ export class AuthController {
 
   @Post('/register')
   @HttpCode(HttpStatus.OK)
-  async register(
-    @Body() registerDto: CreateUserDto,
-  ) {
+  async register(@Body() registerDto: CreateUserDto) {
     return await this.authService.register(registerDto);
   }
 

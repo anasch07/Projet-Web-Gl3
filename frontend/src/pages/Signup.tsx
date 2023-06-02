@@ -6,8 +6,9 @@ import { useHistory } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import LoginRequest from '../models/auth/SignupRequest';
 import authService from '../services/AuthService';
+import SignupRequest from "../models/auth/SignupRequest";
 
-export default function Login() {
+export default function Signup() {
   const { setAuthenticatedUser } = useAuth();
   const history = useHistory();
 
@@ -17,27 +18,49 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm<LoginRequest>();
+  } = useForm<SignupRequest>();
 
-  const onSubmit = async (loginRequest: LoginRequest) => {
+  const onSubmit = async (SignupRequest: SignupRequest) => {
     try {
-      const data = await authService.login(loginRequest);
-      setAuthenticatedUser(data.user);
-      history.push('/');
+      SignupRequest.role = "student";
+      if (SignupRequest.password !== SignupRequest.confirmPassword) {
+        setError("Password and confirm password should be same");
+        return;
+      }
+      const data = await authService.signup(SignupRequest);
+      if (data) {
+        history.push('/');
+      }
     } catch (error) {
       setError(error.response.data.message);
     }
   };
 
   return (
-    <div className="h-full flex justify-center items-center">
+    <div className="h-full flex justify-center items-center ml-4 mr-4">
       <div className="card w-1/4 shadow ml-4 mr-4">
-        <h1 className="mb-3 text-center font-semibold text-4xl">Login</h1>
+        <h1 className="mb-3 text-center font-semibold text-4xl">Signup</h1>
         <hr />
         <form
-          className="flex flex-col gap-5 mt-8 ml-8 mr-8"
+          className="flex flex-col gap-5 mt-8 my-8 "
           onSubmit={handleSubmit(onSubmit)}
         >
+          <input
+              type="text"
+              className="input sm:text-lg"
+              placeholder="First Name"
+              required
+              disabled={isSubmitting}
+              {...register('firstName')}
+          />
+          <input
+              type="text"
+              className="input sm:text-lg"
+              placeholder="Last Name"
+              required
+              disabled={isSubmitting}
+              {...register('lastName')}
+          />
           <input
             type="text"
             className="input sm:text-lg"
@@ -54,6 +77,18 @@ export default function Login() {
             disabled={isSubmitting}
             {...register('password')}
           />
+
+          <input
+              type="password"
+              className="input sm:text-lg"
+              placeholder="Confirm Password"
+              required
+              disabled={isSubmitting}
+              {...register('confirmPassword')}
+          />
+
+
+
           <button
             className="btn mt-3 sm:text-lg"
             type="submit"
@@ -62,16 +97,14 @@ export default function Login() {
             {isSubmitting ? (
               <Loader className="animate-spin mx-auto" />
             ) : (
-              'Login'
+              'Signup'
             )}
           </button>
-
-          {/*div if dont have account*/}
-            <div className="flex justify-center items-center mt-3">
-                <p className="text-sm">Don't have an account?</p>
-                <a href="/signup" className="text-sm text-blue-500 hover:underline">Signup</a>
+          {/* div if you have account login */}
+            <div className="text-center">
+                <a href="/login" className="text-blue-500 hover:underline">Already have an account? Login</a>
             </div>
-            {/*end div if dont have account*/}
+
 
 
           {error ? (
