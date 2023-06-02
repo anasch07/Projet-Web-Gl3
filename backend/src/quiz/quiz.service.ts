@@ -1,10 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import { ContentService } from 'src/content/content.service';
 import { QuizOptionService } from 'src/quiz-option/quiz-option.service';
 import { QuizQuestionService } from 'src/quiz-question/quiz-question.service';
 import { EntityManager, Repository } from 'typeorm';
-import { getConnection } from 'typeorm';
 
 import { CreateQuizDto } from './dto/create-quiz.dto';
 import { UpdateQuizDto } from './dto/update-quiz.dto';
@@ -18,6 +17,8 @@ export class QuizService {
     private quizOptionService: QuizOptionService,
     @InjectRepository(Quiz)
     private quizRepo: Repository<Quiz>,
+    @InjectEntityManager()
+    private readonly entityManager: EntityManager,
   ) {}
 
   async create(createQuizDto: CreateQuizDto) {
@@ -27,8 +28,7 @@ export class QuizService {
     newQuiz.scheduleDate = createQuizDto.scheduleDate;
     newQuiz.deadlineDate = createQuizDto.deadlineDate;
 
-    const connection = getConnection();
-    const queryRunner = connection.createQueryRunner();
+    const queryRunner = this.entityManager.connection.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
@@ -96,8 +96,7 @@ export class QuizService {
   async update(id: string, updateQuizDto: UpdateQuizDto): Promise<Quiz> {
     const { questions, ...quizInfo } = updateQuizDto;
 
-    const connection = getConnection();
-    const queryRunner = connection.createQueryRunner();
+    const queryRunner = this.entityManager.connection.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 

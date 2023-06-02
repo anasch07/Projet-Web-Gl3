@@ -31,7 +31,6 @@ import { join } from 'path';
         database: configService.get('DB_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: configService.get('ENV') == "development",
-        dropSchema: true
       })
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
