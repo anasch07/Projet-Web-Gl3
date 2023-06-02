@@ -31,6 +31,12 @@ export class QuizOptionService {
     return opt;
   }
 
+  findByQuestionId(questionId:string){
+    return this.quizOptionRepository.find({
+      where: { questionId }
+    });
+  }
+
   update(id: string, updateQuizOptionDto: UpdateQuizOptionDto, manager?: EntityManager) {
     return manager?.update(QuizOption, id, updateQuizOptionDto) || this.quizOptionRepository.update(id, updateQuizOptionDto);
   }

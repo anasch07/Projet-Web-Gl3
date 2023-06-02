@@ -2,6 +2,22 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+"""content"""
+type Content {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime!
+  name: String!
+  description: String!
+  courseId: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 """user"""
 type User {
   id: ID!
@@ -16,16 +32,59 @@ type User {
   submissions: [QuizSubmission!]!
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
+"""quizSubmission"""
 type QuizSubmission {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
   deletedAt: DateTime!
+  quizId: String!
+  quiz: Quiz!
+  studentId: String!
+  student: User!
+  creationDate: DateTime!
+  mark: Float!
+}
+
+"""quiz"""
+type Quiz {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime!
+  title: String!
+  description: String!
+  scheduleDate: DateTime!
+  deadlineDate: DateTime!
+  submissions: [QuizSubmission!]!
+  chaptreId: String!
+  chaptre: Content!
+  questions: [QuizQuestion!]!
+}
+
+"""quizQuestion"""
+type QuizQuestion {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime!
+  question: String!
+  quizId: String!
+  mark: Float!
+  options: [QuizOption!]!
+  quiz: Quiz!
+}
+
+"""quizOption"""
+type QuizOption {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime!
+  display: String!
+  questionId: String!
+  question: QuizQuestion!
+  isCorrect: Boolean!
 }
 
 type Query {

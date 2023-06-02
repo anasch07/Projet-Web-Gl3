@@ -59,7 +59,7 @@ export class QuizSubmissionService {
     return `This action returns all quizSubmission`;
   }
 
-  findOne(id: number) {
+  findOne(id:string) {
     return `This action returns a #${id} quizSubmission`;
   }
 

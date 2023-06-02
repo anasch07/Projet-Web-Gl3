@@ -92,6 +92,24 @@ export class QuizService {
     }
     return quiz;
   }
+  
+  async findOneGQL(id: string, entityManager?: EntityManager) {
+    let quiz;
+    if (entityManager) {
+      quiz = await entityManager.findOne(Quiz, {
+        where: {id}
+      });
+    } else {
+      quiz = await this.quizRepo.findOne({
+        where: {id}
+      });
+    }
+    if (!quiz) {
+      throw new NotFoundException('Quiz id not found');
+    }
+    return quiz;
+  }
+
 
   async update(id: string, updateQuizDto: UpdateQuizDto): Promise<Quiz> {
     const { questions, ...quizInfo } = updateQuizDto;

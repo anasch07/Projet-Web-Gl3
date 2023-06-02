@@ -70,7 +70,11 @@ export class QuizQuestionService {
       relations: ['correctOption', 'wrongOptions'],
     });
   }
-
+  findByQuizIDGQL(quizId: string) {
+    return this.quizQuestionRepository.find({
+      where: { quizId }
+    });
+  }
   async findOne(id:string){
     const question = await this.quizQuestionRepository.findOne({where: {id}});
     if (!question) {
