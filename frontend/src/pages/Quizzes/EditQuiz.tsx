@@ -21,7 +21,7 @@ export default function EditQuiz() {
     const [deadlineDate, setDeadlineDate] = useState<Date>();
     const [chapterId, setChapterId] = useState<string>();
     const [quizToEdit, setQuizToEdit] = useState<any>();
-
+    const [message, setMessage] = useState<string>();
     const [addCourseShow, setAddCourseShow] = useState<boolean>(false);
     const [error, setError] = useState<string>();
     const [data, setData] = useState<any>([]); // <== add this line
@@ -95,10 +95,12 @@ export default function EditQuiz() {
         quizToEdit.chapterId = quizToEdit.chaptre.id;
 
         const res = await QuizService.update(id, quizToEdit);
-        console.log('res: ', res);
-
-
-        console.log('quizToEdit: ', quizToEdit);
+          if (res) {
+                setMessage('Quiz updated successfully');
+                setTimeout(() => {
+                    setMessage('');
+                }, 3000);
+          }
 
     }
 
@@ -116,7 +118,7 @@ export default function EditQuiz() {
 
     return (
         <Layout>
-            <h1 className="font-semibold text-3xl mb-5">Add Quiz</h1>
+            <h1 className="font-semibold text-3xl mb-5">Edit Quiz</h1>
             <hr />
             {quizToEdit && (
                 <form onSubmit={handleSaveQuiz} className="mt-4 mb-4 p-4">
@@ -536,6 +538,7 @@ export default function EditQuiz() {
                                                         {
                                                             display: 'Add Answer',
                                                             isCorrect: false,
+                                                            questionId: item.id,
                                                         },
                                                     ],
                                                 };
@@ -583,15 +586,25 @@ export default function EditQuiz() {
                 >
                     Add Question
                 </button>
-                <div className="mt-4 mb-6">
+                <div className="mt-12 mb-24">
                     {/*  put button on the right side of the form */}
                     <button
                         type="submit"
-                        className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right"
+                        className="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right w-1/4"
                     >
-                        Save Quiz
+                        Edit Quiz
                     </button>
                 </div>
+
+            {/*        message to display when the quiz is updated */}
+                {message && (
+                    <div className="text-green-500 text-center">
+                        {message}
+                    </div>
+                )}
+
+
+
             </form> )
             }
 
