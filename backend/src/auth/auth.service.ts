@@ -13,6 +13,7 @@ import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { UserService } from '../user/user.service';
 import { LoginDto } from './dto/login.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
+import { UserInfoDto } from './dto/user-info.dto';
 
 @Injectable()
 export class AuthService {
@@ -61,8 +62,8 @@ export class AuthService {
 
   async logout(request: Request, response: Response): Promise<boolean> {
     // @ts-ignore
-    const userId = request.user['userId'];
-    await this.userService.setRefreshToken(userId, null);
+    const {user}: UserInfoDto = request.user;
+    await this.userService.setRefreshToken(user.id, null);
     response.clearCookie('refresh-token');
     return true;
   }
