@@ -9,6 +9,7 @@ import { CreateQuizSubmissionDto } from './dto/create-quiz-submission.dto';
 import { UpdateQuizSubmissionDto } from './dto/update-quiz-submission.dto';
 import { QuizSubmission } from './entities/quiz-submission.entity';
 import { UserAnswers } from './entities/submission-answer.entity';
+import { UserInfoDto } from 'src/auth/dto/user-info.dto';
 @Injectable()
 export class QuizSubmissionService {
   constructor(
@@ -21,11 +22,12 @@ export class QuizSubmissionService {
     private UserAnswerRepo: Repository<UserAnswers>
   ) {}
  
-  async create(CreateQuizSubmissionDto: CreateQuizSubmissionDto) {
+  async create(CreateQuizSubmissionDto: CreateQuizSubmissionDto, {user}: UserInfoDto) {
     const { idQuizz, fr } = CreateQuizSubmissionDto;
     const quizSubmission= new QuizSubmission()
     const quiz=await this.quizService.findOne(idQuizz);
-    quizSubmission.quiz=quiz
+    quizSubmission.student = user;
+    quizSubmission.quiz = quiz
     quizSubmission.creationDate = new Date()
     quizSubmission.mark = 0
     //sub Save

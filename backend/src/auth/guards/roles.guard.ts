@@ -3,6 +3,7 @@ import { Reflector } from '@nestjs/core';
 
 import { Role } from '../../enums/role.enum';
 import { ROLES_KEY } from 'src/decorators/roles.decorator';
+import { UserInfoDto } from '../dto/user-info.dto';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -18,9 +19,9 @@ export class RolesGuard implements CanActivate {
     if (!requiredRoles) {
       return true;
     }
-    const { user } = context.switchToHttp().getRequest();
+    const userInfo: UserInfoDto = context.switchToHttp().getRequest().user;
     return requiredRoles.some((role) => {
-      return user.role === role;
+      return userInfo.user.role === role;
     });
   }
 }
