@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import authService from '../../services/AuthService';
 import SidebarItem from './SidebarItem';
+import bg from './../../assets/bg.jpg'
 
 interface SidebarProps {
   className: string;
@@ -30,15 +31,16 @@ export default function Sidebar({ className }: SidebarProps) {
   };
 
   return (
-    <div className={'sidebar ' + className}>
-      <Link to="/" className="no-underline text-black">
-        <h1 className="font-semibold text-center">Quizzy</h1>
+    <div className={'rounded-r-lg sidebar ' + className} style={{backgroundImage: `url(${bg})`}}>
+      <Link to="/" className="no-underline text-black flex justify-center mt-5">
+        {/* <h1 className="font-semibold text-center">Quizzy</h1> */}
+        <img src='/logo.png' width={"50%"} />
       </Link>
-      <nav className="mt-5 flex flex-col gap-3 flex-grow">
+      <nav className="mt-10 flex flex-col gap-3 flex-grow">
         <SidebarItem to="/">
           <Home /> Dashboard
         </SidebarItem>
-        <SidebarItem to="/courses">
+        <SidebarItem to={authenticatedUser.role == "student" ? "/card/contents": "/courses"}>
           <BookOpen /> Courses
         </SidebarItem>
         {authenticatedUser.role === 'admin' ? (

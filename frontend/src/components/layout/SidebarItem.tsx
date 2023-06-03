@@ -18,7 +18,7 @@ export default function SidebarItem({
       to={to}
       className="no-underline text-black hover:bg-gray-300 rounded-md p-3 transition-colors"
     >
-      <span className="flex gap-5 font-semibold">
+      <span className="flex gap-5 font-semibold text-white">
         {children} {active ? <ChevronRight /> : null}
       </span>
     </Link>

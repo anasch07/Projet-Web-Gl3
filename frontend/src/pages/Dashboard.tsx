@@ -26,7 +26,7 @@ export default function Dashboard() {
               </h1>
               <p className="text-center sm:text-lg font-semibold">Courses</p>
             </div>
-            <div className="card shadow text-white bg-green-500 flex-1">
+            <div className="card shadow text-white flex-1" style={{backgroundColor: "#d68db2"}}>
               <h1 className="font-semibold sm:text-4xl mb-3 text-center">
                 {data.numberOfContents}
               </h1>

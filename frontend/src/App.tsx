@@ -13,6 +13,8 @@ import { AuthRoute, PrivateRoute } from './Route';
 import authService from './services/AuthService';
 import EditQuiz from "./pages/Quizzes/EditQuiz";
 import Signup from "./pages/Signup";
+import FillQuiz from './pages/FillQuiz';
+import CardContents from './pages/CardContents';
 
 export default function App() {
   const { authenticatedUser, setAuthenticatedUser } = useAuth();
@@ -41,8 +43,10 @@ export default function App() {
     <Router>
       <Switch>
         <PrivateRoute exact path="/" component={Dashboard} />
+        <PrivateRoute exact path="/fill-quiz/:id" component={FillQuiz} />
         <PrivateRoute exact path="/users" component={Users} roles={['admin']} />
         <PrivateRoute exact path="/courses" component={Courses} />
+        <PrivateRoute exact path="/card/contents" component={CardContents} />
         <PrivateRoute exact path="/courses/:id" component={Contents} />
         <PrivateRoute
           exact
