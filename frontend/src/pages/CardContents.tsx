@@ -27,7 +27,7 @@ export default function CardContents(){
                 onSelect={async () => {
                   console.log("HEEEEEEEEEEEEEEEEEEERE")
                   setSelectedCourse(course.id)
-                  const data: Content[] = await contentService.findAllWithCourses(course.id)
+                  const data: Content[] = await contentService.findAllWithCoursesById(course.id)
                   console.log("----------------------------------------------------")
                   console.log(data)
                   setDisplayData(data)
